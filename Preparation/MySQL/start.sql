@@ -1,0 +1,9 @@
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'pwd123' ;
+DELETE FROM mysql.user WHERE User = '';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT in ('localhost', '127.0.0.1', '::1');
+DROP DATABASE IF EXISTS test;
+FLUSH PRIVILEGES;
+CREATE DATABASE IF NOT EXISTS transcendanceDB ;
+CREATE USER IF NOT EXISTS 'user42' IDENTIFIED BY 'pwd234' ;
+GRANT ALL PRIVILEGES ON transcendanceDB.* TO 'user42' ;
+FLUSH PRIVILEGES;
