@@ -1,0 +1,52 @@
+Include Library with
+import mysql.connector
+at the top of your file.
+(Note that the package has to be installed already)
+
+Installing the package can be done in a virtual enviroment:
+1)
+mkdir project
+cd project
+python -m venv env
+2)
+Use the virtuial python version by running:
+source env/bin/activate
+3)
+Then installing the package:
+pip install mysql-connector-python
+4)
+In the same Terminal, execute your program:
+python ./your_script_here
+
+Or by forcefully installing the mysql-connector package:
+pip3 install mysql-connector --break-system-packages
+(Potentially dangerous)
+
+Then connect to the database by creatign a Connection as such:
+connection_name = mysql.connector.connect(
+  host="localhost",
+  database=' ',
+  user=" ",
+  password=" "
+)
+You may then reference your Connection via connection_name
+
+Then, for creating Transactions, make a Cursor like this:
+cursor_name = connection_name.cursor()
+You may then reference your Connection via cursor_name
+
+Then you can send Requests like this:
+cursor_name.execute("SELECT * from transDB.users;")
+Where the text in brackets AND quotes is your Request.
+!NOTE!
+If your Request changes data, you should commit it ASAP.
+
+Commiting a Transaction:
+connection_name.commit()
+Performs all your queued Transaction on the Database.
+You may queue multiple Transactions in a row, and commit them all at once.
+Just dont forget about comitting.
+
+Un-comitting a Transaction:
+connection_name.rollback()
+https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-rollback.html

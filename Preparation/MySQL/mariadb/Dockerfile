@@ -4,7 +4,7 @@ FROM debian:bookworm-20251117-slim
 RUN apt update
 
 # Install MariaDB 
-RUN apt install -y mariadb-server gettext-base systemd python3 python-is-python3 python3.11-venv
+RUN apt install -y mariadb-server gettext-base systemd python3 python3-pip
 
 WORKDIR /var/simple
 
@@ -17,16 +17,14 @@ RUN mkdir -p /run/mysqld
 
 RUN chown -R mysql:mysql /run/mysqld
 
-RUN mkdir my_project
+WORKDIR /var/simple
 
-RUN cd my_project
-
-RUN python -m venv env
+RUN pip3 install mysql-connector --break-system-packages
 
 # Activate the virtual environment and run the script
-RUN bash -c "source env/bin/activate && python3 ./my_project/env/sql.py"
-
-# Move the SQL file to the desired location
-RUN mv ./tools/sql.py ./my_project/env/sql.py
+# RUN bash -c "source env/bin/activate && python3 ./my_project/env/sql.py"
 
 CMD ["./tools/run.sh"]
+# source ./my_project/env/bin/activate
+# pip install mysql-connector-python
+# pip install mysql-connector-python --upgrade

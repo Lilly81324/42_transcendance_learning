@@ -7,6 +7,8 @@ mydb = mysql.connector.connect(
   password="123"
 )
 
+cursor = mydb.cursor()
+
 TABLES = {}
 
 TABLES['users'] = (
@@ -16,7 +18,13 @@ TABLES['users'] = (
         "  `password` LONGTEXT NULL,"
         "  PRIMARY KEY (`id`));")
 
-mydb.cursor().execute(TABLES['users'])
-print(mydb.users) 
+cursor.execute(TABLES['users'])
+mydb.commit()
+cursor.execute("INSERT INTO transDB.users (name, password) VALUES ('Lilly', 'Passwd123');")
+mydb.commit()
+cursor.execute("SELECT * from transDB.users;")
+rows = cursor.fetchall()
+for row in rows:
+    print(row)
 
 mydb.close()
