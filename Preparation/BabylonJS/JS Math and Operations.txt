@@ -1,0 +1,45 @@
+typeof-operator (NOT A FUNCTION)
+	returns a string of the type
+	used like: let type = typeof var
+	Also works for functions (like alert)
+
+Conversion:
+	To string:
+		Usually done automatically, can be done with result = String(value)
+	To number:
+		Done automatically with operations, or explicitely with result = Number(value)
+		undefined -> NaN
+		null -> 0
+		true, false -> 1, 0
+		strings -> Ignores whitespace at start and end, tries to read, if it cant, then NaN
+	To bool:
+		Can be done with result = Boolean(value)
+		0, null, undefined, NaN, "" -> false
+		rest -> true
+
+Operations:
+	4 basic ones, % modulo, and ** exponentiation
+	+ on strings concatenates
+	other operations on strings treat them like numbers
+
+Order of Operations:
+(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence)
+Higher number = higher precedence
+8 new
+7 ++ / --
+6 math operations
+5 bitshifting
+4 logical Operators
+3 bitwise operations
+2 asignement
+1 ,
+
+Modify in place
+	n = n+2 can be written as n+= 2
+	This goes for all arithmetic and bitwise Operators
+
+Increment / Decrement
+	var++, ++var, var--, --var work
+	post incrementing (var++) returns the previous value
+	1 = 1++
+	2 = ++1

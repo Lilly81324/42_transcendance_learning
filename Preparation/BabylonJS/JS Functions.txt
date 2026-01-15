@@ -1,0 +1,10 @@
+Usefull functions:
+	alert
+		Usage: alert(inputString)
+		Use: Pops up a window with a text
+	prompt
+		Usage: result = (displayText, [defaultValue])     defaultValue is optional
+		Use: Prompts user to input something
+	confirm
+		Usage: result = confirm(question)
+		Use: Shows prompt to and returns either true or false

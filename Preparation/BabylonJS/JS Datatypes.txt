@@ -1,0 +1,30 @@
+number
+	Typed: only digits, optionaly float notation with 'x.x'
+	Values: NaN, Infinity, -Infinity, (-2^53 -1) til (2^53 -1)
+
+bigint
+	Typed: digits with 'n' at the end
+	Values: all natural numbers
+
+string:
+	Typed: Characters in "", '', or ``
+	Values: ` allow for inserting values like this: `${name}`
+
+boolean:
+	Typed: true or false
+	Values: true or false
+
+null:
+	Typed: null
+	Value: Just one possible value, represents an unknown value, is not a pointer
+
+undefined:
+	Typed: undefined
+	Value: Just one possible value, represents an undefined value, is the default value
+
+synbol
+
+object:
+	Can hold multiple values
+
+(functions)
