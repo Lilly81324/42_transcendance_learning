@@ -8,3 +8,47 @@ Usefull functions:
 	confirm
 		Usage: result = confirm(question)
 		Use: Shows prompt to and returns either true or false
+
+Functions are done as such:
+function function_name(param1, param2, ...0)
+{
+	//body
+}
+
+Example:
+function displayText(text)
+{
+	alert(text);
+}
+
+Parameters only need to haev a name.
+Calling a function does not need to have all Parameters, 
+they will end up undefined.
+
+Parameters can be given default Values like:
+function example(number = 5, string = "Hello World") {};
+
+Functions can be stored in variables
+let function_name = function() { alert()"Test"); };
+Theese functions can be printed out:
+alert(function_name);
+
+Since its a value, it can be copied to another variable.
+
+Functions can be used "before" they are used
+
+Arrow Functions:
+	Are the same as normal functions, but with a different syntax:
+	name = param1 => return value and statement
+	Example:
+	let double = n => n * 2;
+	// roughly the same as: let double = function(n) { return n * 2 }
+	(copied straight from javascript.info)
+
+	If an arrow function has no parameters, write 
+	()
+	for the params
+
+	If you need more then one line, you can open {} after the =>
+	Example:
+	let text = () => { alert("Hello..."); alert("...and goodbye")};

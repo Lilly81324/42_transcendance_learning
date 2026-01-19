@@ -1,0 +1,39 @@
+Most of the stuff works the same as in C
+
+If, Else-if, While, For, Switch, all work the same
+Break, Continue work the same as well.
+
+However, we can now use AND and OR with non-booleans.
+OR (||) then returns the first value, if the condition is true,
+and returns the second value, if the condition is false.
+AND (&&) returns the first value, if the condition is true,
+and the second if its not true.
+
+If the condition is () then we return the [] element
+	true	false
+||	[0]		[1]
+&&	[1]		[0]
+
+Also there is a new operator "??"
+It returns whichever result is defined (not null nor undefined),
+preffering the first.
+Its kind of like ||, but also not really.
+
+Precedence: (higher = higher)
+AND
+||, ??
+
+Labels can be given to loops by writing them before the loop like:
+label_name: for (let int i = 0; i < 10 ; i++)
+{
+	for (let int j = 0; j < 10 ; i++)
+	{
+		if (i = 6 && j == 7)
+			break label_name;
+	}
+}
+And looks can be broken out like that.
+(Can be used in any nested code)
+
+Switch Statements:
+Only work with all cases being the same type
