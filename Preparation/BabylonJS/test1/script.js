@@ -1,5 +1,3 @@
-"using strict"
-
 export const createScene = function () {
     
     const scene = new BABYLON.Scene(engine);
