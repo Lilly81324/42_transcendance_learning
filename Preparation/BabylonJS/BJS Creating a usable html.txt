@@ -1,0 +1,51 @@
+We start otu with a simple html file.
+This file is then loaded in one of 2 ways.
+Either the user directly loads the file from their PC.
+(file:///home/path/file.html)
+(Quick, isolated, great for testing)
+Or the html is accessed through a hosted website.
+(https://url/file.html)
+(Difficult, globally accessible, for final products)
+
+This file should include some style information for the entire body,
+as well as a custom named canvas element (from here on called renderCanvas).
+We also have to enable the execution of BabylonJs in the browser.
+For this, we enable it through use of it as a script.
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+This uses the official BabylonJS Script.
+
+Then in the body, we create a canvas module, which we give the same id,
+as the named element, whoose style we already chose.
+
+We can almost run our script.
+But first, we need to set up its enviroment.
+
+Web Browsers automatically inject a "Web API" into your html.
+This means that we get access to certain web based variables:
+window
+ ├── document
+ ├── console
+ ├── location
+ ├── history
+ ├── fetch
+ ├── WebSocket
+ ├── requestAnimationFrame
+(Source: ChatGPT)
+
+For now only document matters, as it holds the Element we created earlier (our canvas).
+We store this element, and start a new Engine instance of BabylonJS based on that Element.
+This tells our BabylonJS script (the one from before), where to be running our script in.
+
+Now you may declare your createScene function,
+as well as all its contents.
+(You dont need to export it, only declare the function)
+
+Now call the Function, and store the scene object it creates.
+This executes our Script.
+
+We still need to create a Renderer though,
+so we do so by calling our Engine and giving it the scenes Renderer to execute.
+
+Now, although not strictly neccesary, its recommended to use the window variable from the Wep API,
+and set its resize function to that of our engine.
+This properly scales the window.

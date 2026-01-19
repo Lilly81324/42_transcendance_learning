@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html>
-<body>
-  <canvas id="renderCanvas"></canvas>
+  <head>
+    <style>
+      /* Set up the canvas to be using the whole page */
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+    <!-- This line loads BabylonJS, which allows usage of it -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  </head>
 
-  <script type="module">
-    import { createScene } from "./script.js";
+  <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+    <!-- touch-action="none" for best results from PEP -->
 
-    const canvas = document.getElementById("renderCanvas");
-    const engine = new BABYLON.Engine(canvas, true);
+    <script>
+      const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+      const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
-    const scene = createScene(engine, canvas);
+      // Add your code here matching the playground format
+      const createScene = function () {
+        const scene = new BABYLON.Scene(engine);
 
-    engine.runRenderLoop(() => {
-      scene.render();
-    });
+        BABYLON.ImportMeshAsync("https://assets.babylonjs.com/meshes/box.babylon");
 
-    window.addEventListener("resize", () => {
-      engine.resize();
-    });
-  </script>
-</body>
+        const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0));
+        camera.attachControl(canvas, true);
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
+
+        return scene;
+      };
+
+      const scene = createScene(); //Call the createScene function
+
+      // Register a render loop to repeatedly render the scene
+      engine.runRenderLoop(function () {
+        scene.render();
+      });
+
+      // Watch for browser/canvas resize events
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+    </script>
+  </body>
 </html>
