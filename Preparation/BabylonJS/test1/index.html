@@ -1,11 +1,25 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-
 <body>
+  <canvas id="renderCanvas"></canvas>
+
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script type="module"
-  src="/42_transcendance_learning/Preparation/BabylonJS/test1/script.js"></script>
 
+  <script type="module">
+    import { createScene } from "./script.js";
+
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true);
+
+    const scene = createScene(engine, canvas);
+
+    engine.runRenderLoop(() => {
+      scene.render();
+    });
+
+    window.addEventListener("resize", () => {
+      engine.resize();
+    });
+  </script>
 </body>
-
 </html>
