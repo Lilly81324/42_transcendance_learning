@@ -4,12 +4,12 @@
  * @param posVector new BABYLON.Vector3 for position of fire
  * @returns Created Particle System
  */
-export const particle_fire1 = (scene, size, posVector) => {
+export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero()) => {
 		// Create a particle system
 	const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
-	
+
 	// Texture of each particle
-	particleSystem.particleTexture = new BABYLON.Texture("textures/sun.png", scene, false, false);
+	particleSystem.particleTexture = new BABYLON.Texture("textures/sun.png", scene);
 	particleSystem.particleTexture.hasAlpha = true;
 	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
 	
