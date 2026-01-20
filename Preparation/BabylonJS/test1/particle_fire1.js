@@ -7,11 +7,13 @@
 export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero()) => {
 		// Create a particle system
 	const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+	alert(size);
 
 	// Texture of each particle
-	particleSystem.particleTexture = new BABYLON.Texture("textures/sun.png", scene);
+	particleSystem.blendMode = 2;
+	particleSystem.particleTexture = new BABYLON.Texture("https://pngimg.com/uploads/sun/sun_PNG13418.png", scene);
 	particleSystem.particleTexture.hasAlpha = true;
-	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
+	alert(posVector);
 	
 	var boxEmitter = new BABYLON.Vector3(0, 0, 0);
 	
