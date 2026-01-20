@@ -11,7 +11,7 @@ export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero
 
 	// Texture of each particle
 	particleSystem.blendMode = 2;
-	particleSystem.particleTexture = new BABYLON.Texture("https://pngimg.com/uploads/sun/sun_PNG13418.png", scene);
+	particleSystem.particleTexture = new BABYLON.Texture("textures/sun.png", scene);
 	particleSystem.particleTexture.hasAlpha = true;
 	alert(posVector);
 	
