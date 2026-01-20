@@ -7,7 +7,6 @@
 export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero()) => {
 		// Create a particle system
 	const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
-	alert(size);
 
 	// Texture of each particle
 	particleSystem.blendMode = 2;
@@ -39,8 +38,8 @@ export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero
 	particleSystem.addSizeGradient(0.5, 0);
 
 	// Graininess of fire
-	particleSystem.addColorGradient(0.02, BABYLON.Color4(1, 0, 0, 1), BABYLON.Color4(1, 1, 0, 1));
-	particleSystem.addColorGradient(size * 0.8, BABYLON.Color4(0, 0, 0, 0));
+	particleSystem.addColorGradient(0.02, new BABYLON.Color4(1, 0, 0, 1), new BABYLON.Color4(1, 1, 0.12, 1));
+	particleSystem.addColorGradient(size * 0.8, new BABYLON.Color4(0, 0, 0, 0));
 	particleSystem.start();
 
 	return (particleSystem);
