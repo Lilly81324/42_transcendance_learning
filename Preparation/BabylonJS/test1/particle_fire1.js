@@ -39,8 +39,8 @@ export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero
 	particleSystem.addSizeGradient(0.5, 0);
 
 	// Graininess of fire
-	particleSystem.addColorGradient(0.02, BABYLON.Color3.Red(), BABYLON.Color3.Yellow());
-	particleSystem.addColorGradient(size * 0.8, BABYLON.Color3.Black());
+	particleSystem.addColorGradient(0.02, BABYLON.Color4(1, 0, 0, 1), BABYLON.Color4(1, 1, 0, 1));
+	particleSystem.addColorGradient(size * 0.8, BABYLON.Color4(0, 0, 0, 0));
 	particleSystem.start();
 
 	return (particleSystem);
