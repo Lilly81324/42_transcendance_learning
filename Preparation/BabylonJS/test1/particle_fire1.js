@@ -12,12 +12,14 @@ export const particle_fire1 = (scene, size = 1, posVector = BABYLON.Vector3.Zero
 	particleSystem.blendMode = 2;
 	particleSystem.particleTexture = new BABYLON.Texture("textures/sun.png", scene);
 	particleSystem.particleTexture.hasAlpha = true;
-	alert(posVector);
 	
 	var boxEmitter = new BABYLON.Vector3(0, 0, 0);
 	
 	particleSystem.emitter = boxEmitter;
 	particleSystem.createDirectedSphereEmitter(0.7, new BABYLON.Vector3(-0.2, 1, -0.2), new BABYLON.Vector3(0.3, 1, 0.3));
+
+	particleSystem.isLocal = true;
+	particleSystem.forceDepthWrite = false;
 
 	// Make them oblong
 	particleSystem.minScaleY = 1.0;
