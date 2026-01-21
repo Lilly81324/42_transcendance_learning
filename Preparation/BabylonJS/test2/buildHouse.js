@@ -4,7 +4,7 @@ function buildRoof(position, scene)
 	const material = new BABYLON.StandardMaterial("Roof Material", scene);
 
 	// Create Texture for Base
-	material.diffuseTexture = new BABYLON.Texture("https://img.freepik.com/premium-vector/old-roof-tiles-seamless-background_172107-207.jpg", scene);
+	material.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/textures/crate.png", scene);
 
 	// Map Texture to Roof
 	const uvMap = [];
