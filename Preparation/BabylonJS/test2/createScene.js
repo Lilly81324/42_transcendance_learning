@@ -11,7 +11,7 @@ export function createScene(engine, canvas) {
 
 	const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10});
 
-	buildHouse();
+	buildHouse(new BABYLON.Vector3(0, 0, 0), scene);
 
 return scene;
 };
