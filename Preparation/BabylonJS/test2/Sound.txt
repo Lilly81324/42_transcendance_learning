@@ -1,0 +1,22 @@
+For Sound:
+https://doc.babylonjs.com/features/introductionToFeatures/chap2/sound/
+
+Sound:
+1) Create an asynchronous function like this:
+	async function initAudio() {
+		const audioEngine = await BABYLON.CreateAudioEngineAsync();
+		await audioEngine.unlockAsync();
+
+		// Audio stuff
+	}
+2) Add Audio stuff inside function:
+	- Continously looping sound:
+		const sound = await BABYLON.CreateStreamingSoundAsync("name", "<sound file URL>", { loop: true, autoplay: true }, audioEngine);
+	- Sound that plays once:
+		const sound = await BABYLON.CreateSoundAsync("sound", "<sound file URL>");
+		sound.play();
+	- Sound that plays on repeated interval:
+		const sound = await BABYLON.CreateSoundAsync("sound", "<sound file URL>");
+		setInterval(() => { sound.play(); }, 3000);
+3) Call created function in scene:
+	initAudio();

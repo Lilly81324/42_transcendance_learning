@@ -1,0 +1,19 @@
+https://doc.babylonjs.com/features/introductionToFeatures/chap2/placement/
+
+Meshes are created with functions under:
+BABYLON.MeshBuilder.(...)
+Example:
+	const box = BABYLON.MeshBuilder.CreateBox("box", {width: 2, height: 1.5, depth: 3})
+As seen above some things like dimensions can be decided on Creation.
+ALternaticely, create a mesh object first, and then change its properties later on:
+	const box = BABYLON.MeshBuilder.CreateBox("box", {}); //unit cube
+	box.scaling.x = 2;
+	box.scaling.y = 1.5;
+	box.scaling.z = 3;
+	or
+	box.scaling = new BABYLON.Vector3(2, 1.5, 3);
+
+Properties:
+box.scaling.[x,y,z]
+box.position.[x,y,z]
+box.rotation.[x,y,z]
