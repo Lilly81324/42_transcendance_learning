@@ -1,4 +1,5 @@
 import { buildHouse } from "./buildHouse.js";
+import { particle_fire1 } from "./particle_fire1.js";
 
 export function createScene(engine, canvas) {
 	const scene = new BABYLON.Scene(engine);
@@ -10,9 +11,12 @@ export function createScene(engine, canvas) {
 
 	// Create Ground
 	const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10});
+    ground.material = new BABYLON.StandardMaterial("Ground Material", scene);
+    ground.material.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/textures/sand.jpg", scene);
 
 	// Build a "House"
 	buildHouse(new BABYLON.Vector3(0, 0, 0), scene);
+	particle_fire1(scene, 1, new BABYLON.Vector3(0, 1.7, 0));
 
 return scene;
 };

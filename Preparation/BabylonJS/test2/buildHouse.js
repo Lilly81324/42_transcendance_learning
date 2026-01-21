@@ -8,10 +8,8 @@ function buildRoof(position, scene)
 
 	// Map Texture to Roof
 	const uvMap = [];
-	uvMap[0] = new BABYLON.Vector4(0, 0, 0.5, 0.5);
-	uvMap[1] = new BABYLON.Vector4(0, 0.5, 0.5, 1);
-	uvMap[2] = new BABYLON.Vector4(0.5, 0, 1, 0.5);
-	uvMap[3] = new BABYLON.Vector4(0.5, 0.5, 1, 1);
+	uvMap[0] = new BABYLON.Vector4(0.5, 0, 1, 1);
+	uvMap[0] = new BABYLON.Vector4(0.5, 0, 1, 1);
 
 	// Create Roof
 	const roof = new BABYLON.MeshBuilder.CreateCylinder("roof", {diameter: 1.5, height: 1.0, tessellation: 3, faceUV: uvMap, wrap: true});
