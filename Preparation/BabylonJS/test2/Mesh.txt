@@ -17,3 +17,19 @@ Properties:
 box.scaling.[x,y,z]
 box.position.[x,y,z]
 box.rotation.[x,y,z]
+
+Combine multiple meshes into one with:
+const new_mesh = new BABYLON.MergeMeshes([mesh1, mesh2], true, false, null, false, true)
+Parameter Explanation:
+Array of meshes - the meshes you want to merge
+Dispose source  - If the original meshes should be cleaned
+Is Sum of Certices > 64k - Not for this
+Mesh to merge into - Null here, we want to make a new combination
+subdivideWithSubMeshes - If Mesh should be subdivided into different Meshes
+multiMultiMaterials - Overwrites last parameter, subdivides Mesh into submeshes with differnent Materials
+
+A Mesh can be copied either with:
+.clone("New Object")
+	Makes a copy that shares the geometry, meaning changes to one change all others
+.createInstance("New Object")
+	MUCH easier to render with lots of copies
