@@ -1,4 +1,4 @@
-import { buildHouse } from "./buildHouse";
+import { buildHouse } from "./buildHouse.js";
 
 export function createVillage(scene)
 {
