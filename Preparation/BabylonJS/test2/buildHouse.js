@@ -14,6 +14,7 @@ function buildRoof(position, scene)
 	const roof = new BABYLON.MeshBuilder.CreateCylinder("roof", {diameter: 1.5, height: 1.0, tessellation: 3, faceUV: uvMap, warp: true});
 	roof.scaling.x = 0.6;
 	roof.rotation.z = Math.PI / 2;
+    roof.rotation.y = Math.PI / 2
     roof.position.x = position.x;
 	roof.position.y = position.y + 1.22;
     roof.position.z = position.z;
@@ -47,6 +48,7 @@ function buildBase(position, scene)
 	// Create Box with given Mapping and Material
 	const box = new BABYLON.MeshBuilder.CreateBox("box", {faceUV: uvMap, warp: true}, scene)
 	box.material = material;
+    box.position.y = 0.5
 	return (box);
 }
 

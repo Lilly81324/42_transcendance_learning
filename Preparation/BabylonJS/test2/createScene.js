@@ -10,7 +10,7 @@ export function createScene(engine, canvas) {
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
 
 	// Create Ground
-	const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 10});
+	const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 10, height: 30});
     ground.material = new BABYLON.StandardMaterial("Ground Material", scene);
     ground.material.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/textures/sand.jpg", scene);
 
