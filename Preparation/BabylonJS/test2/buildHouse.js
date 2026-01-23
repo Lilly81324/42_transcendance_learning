@@ -6,12 +6,8 @@ function buildRoof(position, scene)
 	// Create Texture for Base
 	material.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/textures/crate.png", scene);
 
-	// Map Texture to Roof
-	const uvMap = [];
-	uvMap[0] = new BABYLON.Vector4(0.5, 0, 1, 1);
-
 	// Create Roof
-	const roof = new BABYLON.MeshBuilder.CreateCylinder("roof", {diameter: 1.5, height: 1.0, tessellation: 3, faceUV: uvMap, warp: true});
+	const roof = new BABYLON.MeshBuilder.CreateCylinder("roof", {diameter: 1.5, height: 1.0, tessellation: 3});
 	roof.scaling.x = 0.6;
 	roof.rotation.z = Math.PI / 2;
     roof.rotation.y = Math.PI / 2
@@ -34,7 +30,7 @@ function buildBase(position, scene)
 	const material = new BABYLON.StandardMaterial("House Material", scene);
 	
 	// Create Texture for Base
-	material.diffuseTexture = new BABYLON.Texture("textures/violentdays_large.jpg", scene);
+	material.diffuseTexture = new BABYLON.Texture("https://www.humus.name/Textures/Stones.jpg", scene);
 
 	// Map Texture for Base
 	let uvMap = [];
@@ -46,7 +42,7 @@ function buildBase(position, scene)
 	uvMap[5] = new BABYLON.Vector4(0.25,	0,		0.5,	 (1/3));
 
 	// Create Box with given Mapping and Material
-	const box = new BABYLON.MeshBuilder.CreateBox("box", {faceUV: uvMap, warp: true}, scene)
+	const box = new BABYLON.MeshBuilder.CreateBox("box", {faceUV: uvMap, wrap: true}, scene)
 	box.material = material;
     box.position.y = 0.5
 	return (box);

@@ -1,5 +1,6 @@
 import { createVillage } from "./createVillage.js";
 import { particle_fire1 } from "./particle_fire1.js";
+import { createSky } from "./createSky.js";
 
 export function createScene(engine, canvas) {
 	const scene = new BABYLON.Scene(engine);
@@ -17,6 +18,7 @@ export function createScene(engine, canvas) {
 	// Build a "House"
 	createVillage(scene);
 	particle_fire1(scene, 1, new BABYLON.Vector3(0, 1.7, 0));
+	createSky(scene);
 
 return scene;
 };
