@@ -30,7 +30,7 @@ function buildBase(position, scene)
 	const material = new BABYLON.StandardMaterial("House Material", scene);
 	
 	// Create Texture for Base
-	material.diffuseTexture = new BABYLON.Texture("https://www.humus.name/Textures/Stones.jpg", scene);
+	material.diffuseTexture = new BABYLON.Texture("textures/Stones.jpg", scene);
 
 	// Map Texture for Base
 	let uvMap = [];
