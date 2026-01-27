@@ -33,3 +33,21 @@ A Mesh can be copied either with:
 	Makes a copy that shares the geometry, meaning changes to one change all others
 .createInstance("New Object")
 	MUCH easier to render with lots of copies
+
+You can make any 2d shape with 3d depth,
+by creating a Vector3 array:
+const array_name = [
+	 new BABYLON.Vector3(-3, 0, -1),
+	new BABYLON.Vector3(1, 0, -1),
+	new BABYLON.Vector3(3, 0, 1),
+	new BABYLON.Vector3(-1, 0, 1),
+]
+and creating a:
+MeshBuilder.ExtrudePolygon{"", {shape: array_name, depth: 0.3}}
+
+Another Example: Make a cylinder:
+const circular = []
+for (let i = 0; i < 80; i++) {
+	circular.push(new BABYLON.Vector3(0.2 * Math.cos(i * Math.PI / 40), 0, 0.2 * Math.sin(i * Math.PI / 40) - 0.1));
+}
+const wheel = BABYLON.MeshBuilder.ExtrudePolygon("car", {shape: circular, depth: 0.15});

@@ -1,0 +1,46 @@
+To animate something, you need 3 things:
+
+An array of keyframes of properties
+	Create an array, and push instances of a frame count and value into it.
+	Theese act as keyframes, 
+	telling the Animation, 
+	how much something should be moved / turned at a time.
+	Example:
+		const wheelKeys = [];
+		wheelKeys.push({
+		frame: 0,
+		value: 0,
+		});
+		wheelKeys.push({
+		frame: 30,
+		value: 2 * Math.PI,
+		});
+		// At Frame 0, have 0 rotation, after 30 frames, have 360 degree rotation
+
+A Babylon Animation
+	This is an object, which gets constructed,
+	and later assigend your array of keyframes.
+	It describes how the animation should run,
+	based on your keyframes, and extends the behaviour of keyframes,
+	to each frame in the loop.
+	It is construced with:
+		- Name of the Animation
+		- Property to change
+		- Amount of frames per second
+		- Data Type for the property to change
+		- Mode how to loop Animation
+	Example:
+		const animWheel = new BABYLON.Animation("wheelAnimation", "rotation.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+		animWheel.setKeys(wheelKeys);
+
+An Object to animate:
+	Your Mesh that should be moving / turning.
+	Assign the Babylon Animation to its animations array.
+	This array can hold multiple Animations,
+	which allows for multiple simultaneous animations.
+	Example:
+		mesh.animations = [animWheel];
+
+Then, when you have all of them, tell the scene to animate your object:
+	Example:
+		scene.beginAnimation(wheels[0], 0, 30, true);
