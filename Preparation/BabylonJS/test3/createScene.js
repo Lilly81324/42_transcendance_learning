@@ -1,7 +1,3 @@
-import { createVillage } from "./createVillage.js";
-import { particle_fire1 } from "./particle_fire1.js";
-import { createSky } from "./createSky.js";
-
 export function createScene(engine, canvas) {
 	const scene = new BABYLON.Scene(engine);
 
