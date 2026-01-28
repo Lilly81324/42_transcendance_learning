@@ -13,7 +13,7 @@ function makeWheels(scene, scale, parent)
     const wheels = [];
     wheels[0] = BABYLON.MeshBuilder.CreateCylinder("wheel", {height: 0.05 * scale, diameter: 0.15 * scale, tessellation: 40, faceUV: wheelUV}, scene);
     wheels[0].material = new BABYLON.StandardMaterial("Wheel Material", scene);
-    wheels[0].material.diffuseTexture = new BABYLON.Texture("/textures/wheel-side.png", scene);
+    wheels[0].material.diffuseTexture = new BABYLON.Texture("/textures/wheel_side.png", scene);
     wheels[0].parent = parent;
     wheels[0].position.x = 0.05 * scale;
     wheels[0].position.y = 0;
