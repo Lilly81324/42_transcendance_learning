@@ -37,7 +37,7 @@ function makeCar(scene, scale)
     ]
 
     for (let i = 0; i < 20; i++) {
-        outline.push(new BABYLON.Vector3(0.2 * scale * Math.cos(i * Math.PI / 40), 0, 0.2 * scale * Math.sin(i * Math.PI / 40) - 0.1));
+        outline.push(new BABYLON.Vector3(0.2 * scale * Math.cos(i * Math.PI / 40), 0, 0.2 * scale * Math.sin(i * Math.PI / 40) - (0.1 * scale)));
     }
     outline.push(new BABYLON.Vector3(0, 0, 0.1 * scale));
     outline.push(new BABYLON.Vector3(-0.3 * scale, 0, 0.1 * scale));
@@ -99,9 +99,13 @@ function animateWheels(wheels, scene)
 
 export function createCar(scene)
 {
-	const car = makeCar(scene, 1);
-	const wheels = makeWheels(scene, 1, car);
-	car.position.x = -0.4;
+    const scale = 4;
+	const car = makeCar(scene, scale);
+	const wheels = makeWheels(scene, scale, car);
+    car.rotation.y = -Math.PI / 2;
+	car.position.x = -1;
+    car.position.z = 0.5;
+    car.position.y = 0.1 * scale + (0.15 * scale / 2);
 
 	animateWheels(wheels, scene);
 }
