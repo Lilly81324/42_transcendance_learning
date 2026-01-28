@@ -49,7 +49,7 @@ function makeCar(scene, scale)
     uv_car[2] = new BABYLON.Vector4(0.38, 1, 0, 0.5);
 
     // Build Car
-    const car_base = BABYLON.MeshBuilder.ExtrudePolygon("Car Base", {shape: outline, depth: 0.2 * scale, faceUV: uv_car, wrap: true});
+    const car_base = BABYLON.MeshBuilder.ExtrudePolygon("Car Base", {shape: outline, depth: 0.2 * scale, faceUV: uv_car, wrap: true}, scene);
     car_base.rotation.x = -Math.PI / 2;
     
     car_base.material = new BABYLON.StandardMaterial("Car Material", scene);
