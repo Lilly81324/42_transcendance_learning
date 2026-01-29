@@ -13,7 +13,7 @@ function makeWheels(scene, scale, parent)
     const wheels = [];
     wheels[0] = BABYLON.MeshBuilder.CreateCylinder("wheel", {height: 0.05 * scale, diameter: 0.15 * scale, tessellation: 40, faceUV: wheelUV}, scene);
     wheels[0].material = new BABYLON.StandardMaterial("Wheel Material", scene);
-    wheels[0].material.diffuseTexture = new BABYLON.Texture("/textures/wheel_side.png", scene);
+    wheels[0].material.diffuseTexture = new BABYLON.Texture("textures/wheel_side.png", scene);
     wheels[0].parent = parent;
     wheels[0].position.x = 0.05 * scale;
     wheels[0].position.y = 0;
@@ -97,6 +97,31 @@ function animateWheels(wheels, scene)
     scene.beginAnimation(wheels[3], 0, 30, true);
 }
 
+function animateCar(car, scene)
+{
+    const car_keys = [];
+
+    // 
+    const steps = 30;
+    // Length of the Animation in Frames (1sec = 30f)
+    const frame_duration = 120;
+    // How much to reduce the acceleration
+    const dampening = 15;
+    // How much increase in acceleration
+    const exponent = 1.8;
+    const start_value = 0;
+    for (let i = 0; i < steps; i++)
+    {
+        car_keys.push({frame: (frame_duration / steps) * i, value: (i ** exponent) / dampening});
+    }
+
+    const animCar = new BABYLON.Animation("carAnimation", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    animCar.setKeys(car_keys);
+    car.animations = [];
+    car.animations.push(animCar);
+    scene.beginAnimation(car, 0, frame_duration, true);
+}
+
 export function createCar(scene)
 {
     const scale = 4;
@@ -106,6 +131,7 @@ export function createCar(scene)
 	car.position.x = -1;
     car.position.z = 0.5;
     car.position.y = 0.1 * scale + (0.15 * scale / 2);
+    animateCar(car, scene);
 
 	animateWheels(wheels, scene);
 }
