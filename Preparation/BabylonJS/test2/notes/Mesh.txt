@@ -19,7 +19,7 @@ box.position.[x,y,z]
 box.rotation.[x,y,z]
 
 Combine multiple meshes into one with:
-const new_mesh = new BABYLON.MergeMeshes([mesh1, mesh2], true, false, null, false, true)
+const new_mesh = new BABYLON.Mesh.MergeMeshes([mesh1, mesh2], true, false, null, false, true)
 Parameter Explanation:
 Array of meshes - the meshes you want to merge
 Dispose source  - If the original meshes should be cleaned

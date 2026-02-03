@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Set up the canvas to be using the whole page */
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+    <!-- This line loads BabylonJS, which allows usage of it -->
+  </head>
+  
+  <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+    <!-- touch-action="none" for best results from PEP -->
+    
+    <!-- Get Earcut scripts for extruding Polygons -->
+    <script src="https://cdn.jsdelivr.net/npm/earcut@2.2.4/dist/earcut.min.js"></script>
+    <!-- Babylon functions -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <!-- Main script -->
+    <script>
+       function createCamera(scene, pos_x = 0, pos_y = 0, max_distance = 8)
+        {
+
+          const camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2, 10, new BABYLON.Vector3(0, 0, 0), scene);
+
+          // Theese two parameters have to be adjusted together, x and y should match, and z should be positive
+          camera.position = new BABYLON.Vector3(pos_x, pos_y, -max_distance);
+          camera.target  = new BABYLON.Vector3(pos_x, pos_y, 0);
+          camera.attachControl(canvas, true, false);
+          camera.wheelPrecision = 20;
+          camera.minZ = 0.3
+          // Minimum Distance of Camera to target
+          camera.lowerRadiusLimit = 2
+          // Maximum Distance of Camera to target
+          camera.upperRadiusLimit = max_distance
+          
+          // No rotating Camera
+          camera.angularSensibilityX = 300;
+          camera.angularSensibilityY = 300;
+          // Make right click pan camera
+          camera.useBouncingBehavior = false;
+          camera.fov = 1
+
+          return (camera);
+        }
+
+      function createGround(scene)
+      {
+          const box = BABYLON.MeshBuilder.CreateBox("Ground_Box", {width: 10, height: 3, depth: 1}, scene);
+
+          const hill1 = BABYLON.MeshBuilder.CreateCylinder("Ground_Big_Hill", {height: 1, diameter: 4, tessellation: 100}, scene);
+          hill1.position = new BABYLON.Vector3(3, 1.3, 0);
+          hill1.rotation.x = Math.PI / 2;
+
+          const hill2 = BABYLON.MeshBuilder.CreateCylinder("Ground_Small_Hill", {height: 1, diameter: 4, tessellation: 100}, scene);
+          hill2.position = new BABYLON.Vector3(-3, 1.2, 0);
+          hill2.rotation.x = Math.PI / 2;
+          hill2.scaling.z = 0.5
+
+          const ground = BABYLON.Mesh.MergeMeshes([box, hill1, hill2], true, false, null, true, true);
+          ground.position.z = 1;
+          return (ground);
+      }
+
+      function createScene(engine, canvas) {
+        const scene = new BABYLON.Scene(engine);
+
+        // Setup Camera and Ligthing
+        const camera = createCamera(scene, 0, 2, 6);
+        const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
+
+        const box = new BABYLON.MeshBuilder.CreateBox("Box2", {width: 1, height: 1, depth: 1}, scene);
+        box.position = new BABYLON.Vector3(-7.07, 0, 1);
+        box.rotation.y = Math.PI / 4 * 3
+
+        // Create Ground
+        const ground = createGround(scene);
+
+        scene.beforeRender = function () {
+          const width = 9.3;
+          const height = 30;
+          const zoom_ratio = (1- ((camera.radius - camera.lowerRadiusLimit) / (camera.upperRadiusLimit - camera.lowerRadiusLimit)));
+          const xLimit = (width / 2) * zoom_ratio;
+          if (camera.target.x < -xLimit)
+            camera.target.x = -xLimit;
+          else if (camera.target.x > xLimit)
+            camera.target.x = xLimit;
+          }
+
+      return scene;
+      };
+
+      const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+      const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+      // Add your code here matching the playground format
+      const scene = createScene(engine, canvas); //Call the createScene function
+
+      // Register a render loop to repeatedly render the scene
+      engine.runRenderLoop(function () {
+        scene.render();
+      });
+
+      // Watch for browser/canvas resize events
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+    </script>
+    </script>
+  </body>
+</html>
