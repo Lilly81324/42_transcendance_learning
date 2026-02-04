@@ -33,6 +33,15 @@
      <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
     <!-- Main script -->
     <script type="module">
+      function lock2D(mesh, body) {
+        mesh.position.z = 0;
+
+        const e = mesh.rotationQuaternion.toEulerAngles();
+        mesh.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0,0,e.z);
+
+        body.body.setAngularVelocity(new BABYLON.Vector3(0,0,body.body.getAngularVelocity().z));
+      }
+
        function createCamera(scene, canvas, pos_x = 0, pos_y = 0, max_distance = 8)
         {
           const camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2, 10, new BABYLON.Vector3(0, 0, 0), scene);
@@ -48,8 +57,8 @@
           camera.upperRadiusLimit = max_distance
           
           // No rotating Camera
-          camera.angularSensibilityX = 999999;
-          camera.angularSensibilityY = 999999;
+          camera.angularSensibilityX = 200;
+          camera.angularSensibilityY = 200;
           // Make right click pan camera
           camera.useBouncingBehavior = false;
           camera.fov = 1
@@ -72,20 +81,16 @@
         hill2.scaling.z = 0.5
 
         const ground = BABYLON.Mesh.MergeMeshes([box, hill1, hill2], true, false, null, true, true);
-        ground.position.z = 1;
-        return (ground);
+        const floorAggregate = new BABYLON.PhysicsAggregate(ground, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, scene);
+
+        return (floorAggregate);
       }
 
-      function createScene(engine, canvas) {
-        const scene = new BABYLON.Scene(engine);
+      function createScene(engine, canvas, scene) {
 
         // Setup Camera and Ligthing
         const camera = createCamera(scene, canvas, 0, 2, 6);
         const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
-
-        const box = new BABYLON.MeshBuilder.CreateBox("Box2", {width: 1, height: 1, depth: 1}, scene);
-        box.position = new BABYLON.Vector3(-7.07, 0, 1);
-        box.rotation.y = Math.PI / 4 * 3;
 
         // Create Ground
         const ground = createGround(scene);
@@ -99,28 +104,58 @@
           else if (camera.target.x > xLimit)
           camera.target.x = xLimit;
           }
-
-        return scene;
       };
+
 
       const canvas = document.getElementById("renderCanvas"); // Get the canvas element
       const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
       // Create meshes
-      const scene = createScene(engine, canvas);
+      const scene = new BABYLON.Scene(engine);
 
       // Add Havoc Phys Engine and Gravity to scene
       const havokInstance = await HavokPhysics();
       const hk = new BABYLON.HavokPlugin(true, havokInstance);
       scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
 
-      // Give Ground Map Box Colisions
-      const sphereAggregate = new BABYLON.PhysicsAggregate(scene.meshes[1], BABYLON.PhysicsShapeType.BOX, { mass: 1, restitution: 0.75 }, scene);
+      // Set up Scene
+      createScene(engine, canvas, scene);
 
-      // Ground just in case
-      const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 12, height: 12}, scene);
-      ground.position.y = -1.5;
-      const groundAggregate = new BABYLON.PhysicsAggregate(ground, BABYLON.PhysicsShapeType.BOX, { mass: 0 }, scene);
+      const box = new BABYLON.MeshBuilder.CreateBox("player", {height: 1.5,size: 0.5 }, scene);
+      box.position = new BABYLON.Vector3(0, 6, -1);
+
+      const player = new BABYLON.PhysicsAggregate(
+        box,
+        BABYLON.PhysicsShapeType.BOX,
+        { mass: 1, friction: 0.5 },
+        scene);
+
+      // --- INPUT ---
+      scene.onKeyboardObservable.add(e => {
+          const speed = 1;
+          const current_vel = player.body.getLinearVelocity();
+          if (e.type === BABYLON.KeyboardEventTypes.KEYDOWN) {
+              if (e.event.key === "a") {
+                  current_vel.x = -speed;
+                  player.body.setLinearVelocity(current_vel);
+                  // player.body.applyForce(new BABYLON.Vector3(maxSpeed,a 0, 0), box.getAbsolutePosition());
+                  // player.body.applyAngularImpulse(new BABYLON.Vector3(-0.1, -0.1, -0.1))
+              }
+              if (e.event.key === "d") {
+                  current_vel.x = speed;
+                  player.body.setLinearVelocity(current_vel);
+              }
+              if (e.event.key === "w") {
+                  current_vel.y = speed;
+                  player.body.setLinearVelocity(current_vel);
+              }
+          }
+      });
+
+      // --- 2D LOCKING ---
+      scene.onBeforeRenderObservable.add(() => {
+          lock2D(box, player);
+      });
 
       // Register a render loop to repeatedly render the scene
       engine.runRenderLoop(function () {
