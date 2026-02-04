@@ -5,7 +5,7 @@ export function createScene(engine, canvas) {
 	const scene = new BABYLON.Scene(engine);
 
 	// Setup Camera and Ligthing
-	const camera = createCamera(scene, 0, 2, 6);
+	const camera = createCamera(scene, canvas, 0, 2, 6);
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
 
 	const box = new BABYLON.MeshBuilder.CreateBox("Box2", {width: 1, height: 1, depth: 1}, scene);
@@ -26,4 +26,4 @@ export function createScene(engine, canvas) {
 		}
 
 	return scene;
-	};
+};
