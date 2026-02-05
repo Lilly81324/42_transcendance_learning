@@ -1,18 +1,29 @@
 export function createGround(scene)
 {
-const box = BABYLON.MeshBuilder.CreateBox("Ground_Box", {width: 10, height: 3, depth: 1}, scene);
+	const bottom = -1;
+	const groundShape = [
+		new BABYLON.Vector3(19, 0, bottom),
+		new BABYLON.Vector3(19, 0, 6),
+		new BABYLON.Vector3(15, 0, 6),
+		new BABYLON.Vector3(14, 0, 3),
+		new BABYLON.Vector3(13, 0, 1.5),
+		new BABYLON.Vector3(11, 0, 1.5),
+		new BABYLON.Vector3(9, 0, 3.2),
+		new BABYLON.Vector3(6, 0, 3.25),
+		new BABYLON.Vector3(5, 0, 3),
+		new BABYLON.Vector3(4, 0, 2.5),
+		new BABYLON.Vector3(3, 0, 1.75),
+		new BABYLON.Vector3(2, 0, 1.25),
+		new BABYLON.Vector3(1, 0, 1),
+		new BABYLON.Vector3(0, 0, 1),
+		new BABYLON.Vector3(0, 0, bottom)
+	];
 
-const hill1 = BABYLON.MeshBuilder.CreateCylinder("Ground_Big_Hill", {height: 1, diameter: 4, tessellation: 100}, scene);
-hill1.position = new BABYLON.Vector3(3, 1.3, 0);
-hill1.rotation.x = Math.PI / 2;
+	const ground = BABYLON.MeshBuilder.ExtrudePolygon("Ground_Box", {shape: groundShape, depth: 1}, scene);
+	ground.rotation.x = -Math.PI / 2;
+	ground.position = new BABYLON.Vector3(-9.5, 0, -0.5)
 
-const hill2 = BABYLON.MeshBuilder.CreateCylinder("Ground_Small_Hill", {height: 1, diameter: 4, tessellation: 100}, scene);
-hill2.position = new BABYLON.Vector3(-3, 1.2, 0);
-hill2.rotation.x = Math.PI / 2;
-hill2.scaling.z = 0.5
+	const floorAggregate = new BABYLON.PhysicsAggregate(ground, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, scene);
 
-const ground = BABYLON.Mesh.MergeMeshes([box, hill1, hill2], true, false, null, true, true);
-const floorAggregate = new BABYLON.PhysicsAggregate(ground, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, scene);
-
-return (floorAggregate);
+	return (floorAggregate);
 }

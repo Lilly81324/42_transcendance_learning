@@ -1,0 +1,33 @@
+Source:
+https://doc.babylonjs.com/features/featuresDeepDive/events/actions#triggers
+
+Clicking an Object to make it change height to 1:
+	mesh.actionManager = new BABYLON.ActionManager(scene);
+	mesh.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, house, "position.y", 2));
+    
+Chaining Actions:
+	house.actionManager = new BABYLON.ActionManager(scene);
+    house.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, house, "position.y", 2)).then(new BABYLON.SetValueAction(BABYLON.ActionManager.NothingTrigger, house, "position.y", 0));
+
+Actions with Conditions:
+	mesh.actionManager.registerAction(
+	new BABYLON.InterpolateValueAction(
+		BABYLON.ActionManager.OnPickTrigger,
+		camera,
+		"alpha",
+		0,
+		500,
+		new BABYLON.PredicateCondition(mesh.actionManager, function () {
+		return light.diffuse.equals(BABYLON.Color3.Red());
+		}),
+	),
+	);
+
+OnPickTrigger
+OnDoublePickTrigger
+OnPickDownTrigger
+OnPickUpTrigger
+
+
+OnPointerOverTrigger: Once, when pointer over mesh
+OnPointerOutTrigger: Once, when pointer not over mesh
