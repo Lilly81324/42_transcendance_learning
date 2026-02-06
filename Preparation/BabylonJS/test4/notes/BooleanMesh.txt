@@ -1,0 +1,29 @@
+If you want to "cut out" an area from an existing mesh,
+by using another mesh to mark the area to be cut,
+thats called a boolean operation.
+
+Of course you could do some hacky thing with the renderer,
+where a certain area is treated as see-through.
+But if you want to have any chance of making your newly cut hole have actual phsyics,
+you will need to delve into GSC2 for that.
+
+Sandbox: --------------------------------------------------
+Make your createScene an async function:
+var createScene = async function ()
+And enable the CS2G thingy, by calling this in createScene:
+await BABYLON.InitializeCSG2Async();
+
+After that, you will need to create a CSG object from your mesh,
+then use those objects to create your result,
+and then transform that into a mesh.
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2.5, segments: 32}, scene);
+    sphere.setEnabled(false);
+    var box = BABYLON.MeshBuilder.CreateBox("box", {size: 2}, scene);
+    box.setEnabled(false);
+    const sphereCSG = BABYLON.CSG2.FromMesh(sphere);
+    const boxCSG = BABYLON.CSG2.FromMesh(box);
+    const mesh = boxCSG.subtract(sphereCSG).toMesh("test");
+The .setEnabled() call is there, so we dont see our old meshes, and only the result.
+Its also recommeded to then call .dispose() on your old meshes and your GS2 objects.
+
+Raw Html: -------------------------------------------------

@@ -97,7 +97,7 @@
         return (floorAggregate);
       }
 
-      function createScene(engine, canvas, scene) {
+      async function createScene(engine, canvas, scene) {
 
         // Setup Camera and Ligthing
         const camera = createCamera(scene, canvas, 0, 2, 13.5);
@@ -106,6 +106,25 @@
 
         // Create Ground
         const ground = createGround(scene);
+
+        await BABYLON.InitializeCSG2Async();
+
+        const box = BABYLON.MeshBuilder.CreateBox("positive", {height: 3}, scene);
+        box.position.y = 5;
+        box.position.x = 8;
+        box.setEnabled(false);
+
+        const boxCSG = BABYLON.CSG2.FromMesh(box);
+        const groundCSG = BABYLON.CSG2.FromMesh(scene.meshes[0]);
+
+        const result = groundCSG.subtract(boxCSG);
+        const resultMesh = result.toMesh("New Ground", scene);
+        scene.meshes[0].dispose();
+        boxCSG.dispose();
+        groundCSG.dispose();
+        box.dispose();
+        ground.dispose();
+        const newGroundAggr = new BABYLON.PhysicsAggregate(resultMesh, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, scene);
 
         scene.beforeRender = function () {
           // Formula based on total zoom to determine width when zoomed in
@@ -178,12 +197,18 @@
       function test(scene, box, player)
       {
           let won = false;
+          let lost = false;
           scene.onBeforeRenderObservable.add(() => {
                 lock2D(box, player);
-                if (!won && box.position.y < -2)
+                if (!won && box.position.y < 1.8 && box.position.y > 1.5  && box.position.x > 7.5 && box.position.y < 8.5 )
                 {
-                  alert("You won!");
+                  alert("Congratulations! You won!");
                   won = true;
+                }
+                if (!lost && box.position.y < -3)
+                {
+                  alert("You lost! Hit F5 to reload and try again.");
+                  lost = true;
                 }
           });
       }

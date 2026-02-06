@@ -8,6 +8,9 @@ const canvas = document.getElementById("renderCanvas");
 // Generate the BABYLON 3D engine
 const engine = new BABYLON.Engine(canvas, true);
 
+// Add CSG2 for boolean meshin
+await BABYLON.InitializeCSG2Async();
+
 // Create scene object
 const scene = new BABYLON.Scene(engine);
 
