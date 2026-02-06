@@ -17,7 +17,7 @@ const hk = new BABYLON.HavokPlugin(true, havokInstance);
 scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
 
 // Set up Scene
-createScene(engine, canvas, scene);
+createScene(canvas, scene);
 
 // Create Player Object
 const box = new BABYLON.MeshBuilder.CreateBox("player", {height: 1.5,size: 0.5 }, scene);
