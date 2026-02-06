@@ -31,7 +31,7 @@ const player = new BABYLON.PhysicsAggregate(
 // Register to Central Gameplay Loop
 registerMovement(scene, box, player);
 lock2d(scene, box, player);
-gameWin(scene);
+gameWin(scene, box);
 
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
