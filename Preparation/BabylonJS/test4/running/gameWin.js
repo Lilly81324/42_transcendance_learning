@@ -3,7 +3,7 @@
  * @param scene Scene whoose loop handles checking for win condition
  * @param playerMesh Mesh of the Player, needed for position check
  */
-export function gameWin(scene, box)
+export function gameWin(scene, playerMesh)
 {
 	let won = false;
 	scene.onBeforeRenderObservable.add(() => {
