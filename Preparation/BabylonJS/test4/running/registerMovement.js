@@ -1,3 +1,9 @@
+/**
+ * @brief Handles Contols
+ * @param scene Scene that handles the rendering loop
+ * @param mesh Visual mesh of the Player
+ * @param body Physics Object of the Player
+ */
 export function registerMovement(scene, mesh, physObj)
 {
 	let lastJumped = 0;

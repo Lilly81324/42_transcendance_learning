@@ -175,9 +175,19 @@
       registerMovement(scene, box, player);
 
       // --- 2D LOCKING ---
-      scene.onBeforeRenderObservable.add(() => {
-          lock2D(box, player);
-      });
+      function test(scene, box, player)
+      {
+          let won = false;
+          scene.onBeforeRenderObservable.add(() => {
+                lock2D(box, player);
+                if (!won && box.position.y < -2)
+                {
+                  alert("You won!");
+                  won = true;
+                }
+          });
+      }
+      test(scene, box, player);
 
       // Register a render loop to repeatedly render the scene
       engine.runRenderLoop(function () {

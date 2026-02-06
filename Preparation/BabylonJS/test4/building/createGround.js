@@ -1,3 +1,8 @@
+/**
+ * @brief Creates the Map / Ground Mesh
+ * @param scene Scene to put Ground into
+ * @returns Ground Physics Object
+ */
 export function createGround(scene)
 {
 	const bottom = -1;

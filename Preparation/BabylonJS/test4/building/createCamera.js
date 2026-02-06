@@ -1,10 +1,11 @@
 /**
+ * @brief Creates the Camera
  * @param scene Scene to create the camera in
  * @param canvas Canvas that controls Camera Inputs
  * @param pos_x Number that describes the cameras x position
  * @param pos_y Number that describes the cameras y position
  * @param max_distance Number that describes how far the Camera may zoom out
- * @retunrs 
+ * @returns Camera
  */
 export function createCamera(scene, canvas, pos_x = 0, pos_y = 0, max_distance = 8)
 {
@@ -26,6 +27,19 @@ export function createCamera(scene, canvas, pos_x = 0, pos_y = 0, max_distance =
 	// Make right click pan camera
 	camera.useBouncingBehavior = false;
 	camera.fov = 1
+
+	// Limit Camera Movement and zoom
+	scene.beforeRender = function () {
+		// Formula based on total zoom to determine width when zoomed in
+		const width = camera.upperRadiusLimit * 0.74 -1.475;
+		// Formula to calculate how zoomed in we are
+		const zoom_ratio = (1- ((camera.radius - camera.lowerRadiusLimit) / (camera.upperRadiusLimit - camera.lowerRadiusLimit)));
+		const xLimit = width * zoom_ratio;
+		if (camera.target.x < -xLimit)
+		camera.target.x = -xLimit;
+		else if (camera.target.x > xLimit)
+		camera.target.x = xLimit;
+	}
 
 	return (camera);
 }

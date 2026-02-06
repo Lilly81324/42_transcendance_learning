@@ -1,19 +1,14 @@
-import { createScene } from "./createScene.js";
-import { registerMovement } from "./registerMovement.js";
+import { createScene } from "./building/createScene.js";
+import { registerMovement } from "./running/registerMovement.js";
+import { lock2d } from "./running/lock2d.js";
+import { gameWin } from "./running/gameWin.js";
 
-function lock2D(mesh, body) {
-	mesh.position.z = 0;
+// Get the canvas element
+const canvas = document.getElementById("renderCanvas");
+// Generate the BABYLON 3D engine
+const engine = new BABYLON.Engine(canvas, true);
 
-	const e = mesh.rotationQuaternion.toEulerAngles();
-	mesh.rotationQuaternion = BABYLON.Quaternion.FromEulerAngles(0,0,e.z);
-
-	body.body.setAngularVelocity(new BABYLON.Vector3(0,0,body.body.getAngularVelocity().z));
-}
-
-const canvas = document.getElementById("renderCanvas"); // Get the canvas element
-const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-
-// Create meshes
+// Create scene object
 const scene = new BABYLON.Scene(engine);
 
 // Add Havoc Phys Engine and Gravity to scene
@@ -24,22 +19,19 @@ scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
 // Set up Scene
 createScene(engine, canvas, scene);
 
+// Create Player Object
 const box = new BABYLON.MeshBuilder.CreateBox("player", {height: 1.5,size: 0.5 }, scene);
 box.position = new BABYLON.Vector3(-1, 4, 0);
-
 const player = new BABYLON.PhysicsAggregate(
-box,
-BABYLON.PhysicsShapeType.BOX,
-{ mass: 1, friction: 0.5 },
-scene);
+	box,
+	BABYLON.PhysicsShapeType.BOX,
+	{ mass: 1, friction: 0.5 },
+	scene);
 
-// --- INPUT ---
+// Register to Central Gameplay Loop
 registerMovement(scene, box, player);
-
-// --- 2D LOCKING ---
-scene.onBeforeRenderObservable.add(() => {
-	lock2D(box, player);
-});
+lock2d(scene, box, player);
+gameWin(scene);
 
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
