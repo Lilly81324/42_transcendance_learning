@@ -16,11 +16,11 @@ export function registerMovement(scene, mesh, physObj)
 		physObj.body.getLinearVelocityToRef(velocity);
 		if (fun.event.key === "a") {
 			if (velocity.x > -maxSpeed)
-			physObj.body.applyForce(new BABYLON.Vector3(-accel, 0, 0), box.getAbsolutePosition());
+			physObj.body.applyForce(new BABYLON.Vector3(-accel, 0, 0), mesh.getAbsolutePosition());
 		}
 		if (fun.event.key === "d") {
 			if (velocity.x < maxSpeed)
-			physObj.body.applyForce(new BABYLON.Vector3(accel, 0, 0), box.getAbsolutePosition());
+			physObj.body.applyForce(new BABYLON.Vector3(accel, 0, 0), mesh.getAbsolutePosition());
 		}
 	});
 }
