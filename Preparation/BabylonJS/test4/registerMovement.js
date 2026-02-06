@@ -13,7 +13,7 @@ export function registerMovement(scene, mesh, physObj)
 		const maxSpeed = 4;
 		const accel = 30;
 		const velocity = new BABYLON.Vector3(0, 0, 0);
-		player.body.getLinearVelocityToRef(velocity);
+		physObj.body.getLinearVelocityToRef(velocity);
 		if (e.event.key === "a") {
 			if (velocity.x > -maxSpeed)
 			physObj.body.applyForce(new BABYLON.Vector3(-accel, 0, 0), box.getAbsolutePosition());
