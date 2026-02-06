@@ -8,12 +8,12 @@ export function gameWin(scene, playerMesh)
 	let won = false;
 	let lost = false;
 	scene.onBeforeRenderObservable.add(() => {
-		if (!won && box.position.y < 1.8 && box.position.y > 1.5  && box.position.x > 7.5 && box.position.y < 8.5 )
+		if (!won && playerMesh.position.y < 1.8 && playerMesh.position.y > 1.5  && playerMesh.position.x > 7.5 && playerMesh.position.y < 8.5 )
 		{
 			alert("Congratulations! You won!");
 			won = true;
 		}
-		if (!lost && box.position.y < -3)
+		if (!lost && playerMesh.position.y < -3)
 		{
 			alert("You lost! Hit F5 to reload and try again.");
 			lost = true;
