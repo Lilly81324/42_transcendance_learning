@@ -1,0 +1,13 @@
+Javascript is the base language 
+React is a framework for Javascript
+NextJS is a framework for React.
+
+The DOM is the result of executing the html and its souce code.
+Its the result that you get when all the stuff in your scripts is executed.
+
+To use React, you need to "include" it in your html like this:
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+JSX is Javascript Syntax, and is another framework for javascript,
+that allows the use of html like Syntax
