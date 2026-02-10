@@ -1,0 +1,67 @@
+name : NextJsTest
+
+
+services:
+  # ---------- RabbitMQ (async events: match.finished etc.) ----------
+  # nestjs:
+  #   image: nestjs:1.0
+  #   build: ./nestjs/
+  #   container_name: nestjs
+  #   ports:
+  #     - "9021:9021"
+  #   volumes:
+  #     - nestjs_data:/var/lib/nestjs
+  #   networks: [backend]
+  #   logging :
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+
+  # ---------- Observability: Prometheus ----------
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./infra/observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9090/-/healthy >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks: [backend]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:1.0
+    container_name: nginx
+    build: ./nginx/
+    restart: on-failure
+    healthcheck:
+      test: ["nginx", "-t"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    ports: 
+    - "443:443"
+    volumes:
+      - nginx_data:/nginx
+    networks: [backend]
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  nginx_data:
