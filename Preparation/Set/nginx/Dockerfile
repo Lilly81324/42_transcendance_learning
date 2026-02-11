@@ -1,35 +1,21 @@
-FROM debian:bookworm-20251117-slim
-
-# Update packages
-RUN apt-get update
-
-# Install Prerequisites
-RUN apt --yes install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
-
-# Create signing key for NGINX
-RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-
-# Add NGINX to package list
-RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
-
-# Update again
-RUN apt update
-
-# Install NGINX
-RUN apt --yes install nginx
+FROM nginx:stable-alpine
 
 WORKDIR /nginx
 
+# Static files for testing purposes
 COPY ./src /nginx
 
-# Delte old nginx config
+# Set new config
 RUN rm -f /etc/nginx/nginx.conf
+COPY ./template_nginx.conf /etc/nginx/template_nginx.conf
+ARG NGINX_PORT
+ARG NEXTJS_PORT
+ENV NGINX_PORT=${NGINX_PORT}
+ENV NEXTJS_PORT=${NEXTJS_PORT}
+RUN envsubst '$NGINX_PORT $NEXTJS_PORT' < /etc/nginx/template_nginx.conf > /etc/nginx/nginx.conf
 
-# Copy NGINX Config into Docker
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# Install bash for debugging
+# RUN apk update && apk add bash
 
-# Open port for binding to Host Machine
-EXPOSE 443
-
-# Run nginx as main process, so the Docker doesnt stop
+# Run nginx as main process
 CMD ["nginx", "-g", "daemon off;"]
