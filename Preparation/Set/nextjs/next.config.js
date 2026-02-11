@@ -5,4 +5,4 @@ const nextConfig =
 	distDir: 'build',
 };
 
-MediaSourceHandle.exports = nextConfig;
+module.exports = nextConfig;
