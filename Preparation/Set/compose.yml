@@ -2,21 +2,20 @@ name : NextJsTest
 
 
 services:
-  # ---------- RabbitMQ (async events: match.finished etc.) ----------
-  # nestjs:
-  #   image: nestjs:1.0
-  #   build: ./nestjs/
-  #   container_name: nestjs
-  #   ports:
-  #     - "9021:9021"
-  #   volumes:
-  #     - nestjs_data:/var/lib/nestjs
-  #   networks: [backend]
-  #   logging :
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
+  nestjs:
+    image: nestjs:1.0
+    build: ./nestjs/
+    container_name: nestjs
+    # ports:
+    #   - "9021:9021"
+    # volumes:
+    #   - nestjs_data:/var/lib/nestjs
+    networks: [backend]
+    logging :
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # ---------- Observability: Prometheus ----------
   prometheus:
@@ -69,6 +68,8 @@ services:
       context: ./nextjs/
       args:
         NEXTJS_PORT: "${NEXTJS_PORT}"
+    volumes:
+      - nextjs_data:/nextjs
     restart: on-failure
     networks: [backend]
 
