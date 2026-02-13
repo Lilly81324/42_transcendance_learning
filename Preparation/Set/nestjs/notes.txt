@@ -4,7 +4,26 @@ For example, one Controller handles /api Requests,
 one handles /game Requests, and another /auth.
 The EventController enables calling different functions in one endpoint.
 Example:
-GET /game movePlayer
-GET /game shoot
-GET /game surrenderGame
+    GET /game movePlayer
+    GET /game shoot
+    GET /game surrenderGame
 
+Example Controller:
+    // Import Controller Class and all Methods we need
+    import { Controller, Get } from '@nestjs/common';
+    // Import the Service that this Controller uses
+    import { EventsService } from './events.service';
+    // Mark Controller for specific url, here: localhost/target
+    @Controller('target')
+    // Create Controller Class
+    export class EventsController {
+        // In Constructor, add the EventService Class
+        constructor(private eventService: EventsService) {}
+        // Method that should be handled
+        @Get()
+        // Function to call -> Return Type is given to End User
+        findAll(): any[] {
+            // Call the Services specific function you need
+            return this.eventService.findAll();
+        }
+    }
