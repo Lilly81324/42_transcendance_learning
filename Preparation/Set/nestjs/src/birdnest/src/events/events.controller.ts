@@ -1,5 +1,6 @@
 // Import Controller Class and all Methods we need
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query, Headers, Res, HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 // Import the Service that this Controller uses
 import { EventsService } from './events.service';
 
@@ -14,8 +15,16 @@ export class EventsController {
     // Method that should be handled
     @Get()
     // Function to call -> Return Type is given to End User
-    findAll(): any[] {
+    findAll(@Query('id') id: string): string {
         // Call the Services specific function you need
-        return this.eventService.findAll();
+        return `The query is: ${id}`;
     }
+
+    // @Get("test")
+    // Function to call -> Return Type is given to End User
+    // findAll2(@Res() res: Response) {
+    //     // Call the Services specific function you need
+    //     res.status(HttpStatus.CREATED).send();
+    //     return [];
+    // }
 }

@@ -27,3 +27,19 @@ Example Controller:
             return this.eventService.findAll();
         }
     }
+
+Routing:
+    A Controller can be assigned to a Location with:
+    @Controller("/location)
+    Then any traffic going to localhost/location,
+    will be handled by this Controller
+    Methods can be assigned to specific sublocations with:
+    @Get("sub")
+    Will activate for GET Requests to localhost/location/sub
+
+Query:
+    In the functions parameters, you can define parameters from the query like:
+    @Query('id') var: string
+    Then visiting
+    localhost?id=123
+    will make var = 123
