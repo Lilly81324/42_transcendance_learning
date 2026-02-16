@@ -8,8 +8,12 @@ RUN npm i -g @nestjs/cli
 
 WORKDIR /nestjs
 
-RUN nest new project-name --package-manager npm
+RUN nest new transcendence_test --package-manager npm
 
-WORKDIR /nestjs/project-name
+WORKDIR /nestjs/transcendence_test
+
+RUN rm -rf ./src
+
+COPY ./src/birdnest/src/ ./src
 
 CMD [ "npm", "run", "start" ]
