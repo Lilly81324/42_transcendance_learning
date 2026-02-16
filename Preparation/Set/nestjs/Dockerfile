@@ -14,6 +14,10 @@ WORKDIR /nestjs/transcendence_test
 
 RUN rm -rf ./src
 
-COPY ./src/birdnest/src/ ./src
+COPY ./src/nest ./src
+
+RUN mkdir /game
+
+COPY ./src/game /game
 
 CMD [ "npm", "run", "start" ]

@@ -9,6 +9,6 @@ import type { Response } from 'express';
 export class GameController {
     @Get()
     sendGame(@Res() res: Response) {
-        return (res.sendFile("/home/sikunne/42_transcendance_learning/Preparation/BabylonJS/test4/index.html"));
+        return (res.sendFile("/game/index.html"));
     }
 }

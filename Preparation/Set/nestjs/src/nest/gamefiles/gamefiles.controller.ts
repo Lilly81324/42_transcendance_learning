@@ -17,7 +17,7 @@ export class GamefilesController {
     @Get('*path')
     serveGameFiles(@Res() res: Response, @Req() req: Request)
     {
-        const root = "/home/sikunne/42_transcendance_learning/Preparation/BabylonJS/test4"
+        const root = "/game"
         this.gameService.serve(res, req.url, root);
     }
 }
