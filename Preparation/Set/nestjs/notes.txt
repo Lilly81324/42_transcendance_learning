@@ -43,3 +43,10 @@ Query:
     Then visiting
     localhost?id=123
     will make var = 123
+
+Headers:
+    In the function parameters, you can define parameters from the Request Header like:
+    @Headers("id") var: string
+    Then doing something like:
+    curl http://localhost:3000 -H "id: 123"
+    will make var = 123

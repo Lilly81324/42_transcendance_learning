@@ -20,4 +20,9 @@ RUN mkdir /game
 
 COPY ./src/game /game
 
-CMD [ "npm", "run", "start" ]
+
+# Store port as enviroment variable
+ARG NESTJS_PORT
+ENV NESTJS_PORT=${NESTJS_PORT}
+
+CMD npm run start -- -p ${NESTJS_PORT}

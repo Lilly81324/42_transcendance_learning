@@ -1,7 +1,0 @@
-Nginx Health Check:
-Navigate into nginx Docker Container with:
-	docker exec -it nginx bash
-Then run any of theese:
-	nginx -t
-	cat /var/log/nginx/error.log
-	apt install tree && tree /nginx
