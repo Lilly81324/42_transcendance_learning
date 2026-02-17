@@ -5,8 +5,13 @@ export default function Home() {
 			<p>This is being served through Docker</p>
 			{/* This is a standard html button */}
 			<button onClick={() => alert("Hello World")}>
-				Click on me
+				Hello World
 			</button>
+			<a href="http://localhost:443/nest">
+				<button>
+				Vibeo Game
+				</button>
+			</a>
 		</main>
 	);
 }
