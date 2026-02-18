@@ -27,11 +27,6 @@ services:
         NGINX_PORT: "${NGINX_PORT}"
         NEXTJS_PORT: "${NEXTJS_PORT}"
     restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "nginx", "-t"]
-      interval: 10s
-      timeout: 5s
-      retries: 20
     ports: 
     - "${NGINX_PORT}:${NGINX_PORT}"
     volumes:
@@ -44,7 +39,9 @@ services:
     build: 
       context: ./nextjs/
       args:
+        NESTJS_PORT: "${NESTJS_PORT}"
         NEXTJS_PORT: "${NEXTJS_PORT}"
+        NGINX_PORT:  "${NGINX_PORT}"
     volumes:
       - nextjs_data:/nextjs
     restart: on-failure

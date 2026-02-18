@@ -1,8 +1,10 @@
 FROM node:25-alpine
 
+# Enviroment Variables for Ports
+ARG NESTJS_PORT
 
-# Install bash for debugging
-RUN apk update && apk add bash
+# For debugging
+RUN apk add bash curl
 
 RUN npm i -g @nestjs/cli
 
@@ -20,9 +22,11 @@ RUN mkdir /game
 
 COPY ./src/game /game
 
+# For envsubst
+RUN apk add gettext
 
 # Store port as enviroment variable
-ARG NESTJS_PORT
-ENV NESTJS_PORT=${NESTJS_PORT}
+RUN envsubst '$NESTJS_PORT' < /nestjs/transcendence_test/src/template.main.ts > /nestjs/transcendence_test/src/main.ts
+RUN rm /nestjs/transcendence_test/src/template.main.ts
 
-CMD npm run start -- -p ${NESTJS_PORT}
+CMD npm run start
