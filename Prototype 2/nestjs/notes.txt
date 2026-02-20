@@ -1,0 +1,52 @@
+Controller:
+Class, that accepts and handles a Request for a specific endpoint.
+For example, one Controller handles /api Requests, 
+one handles /game Requests, and another /auth.
+The EventController enables calling different functions in one endpoint.
+Example:
+    GET /game movePlayer
+    GET /game shoot
+    GET /game surrenderGame
+
+Example Controller:
+    // Import Controller Class and all Methods we need
+    import { Controller, Get } from '@nestjs/common';
+    // Import the Service that this Controller uses
+    import { EventsService } from './events.service';
+    // Mark Controller for specific url, here: localhost/target
+    @Controller('target')
+    // Create Controller Class
+    export class EventsController {
+        // In Constructor, add the EventService Class
+        constructor(private eventService: EventsService) {}
+        // Method that should be handled
+        @Get()
+        // Function to call -> Return Type is given to End User
+        findAll(): any[] {
+            // Call the Services specific function you need
+            return this.eventService.findAll();
+        }
+    }
+
+Routing:
+    A Controller can be assigned to a Location with:
+    @Controller("/location)
+    Then any traffic going to localhost/location,
+    will be handled by this Controller
+    Methods can be assigned to specific sublocations with:
+    @Get("sub")
+    Will activate for GET Requests to localhost/location/sub
+
+Query:
+    In the functions parameters, you can define parameters from the query like:
+    @Query('id') var: string
+    Then visiting
+    localhost?id=123
+    will make var = 123
+
+Headers:
+    In the function parameters, you can define parameters from the Request Header like:
+    @Headers("id") var: string
+    Then doing something like:
+    curl http://localhost:3000 -H "id: 123"
+    will make var = 123

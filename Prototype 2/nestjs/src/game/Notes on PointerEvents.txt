@@ -1,0 +1,33 @@
+A canvas can register any change a mouse makes
+This includes: (https://doc.babylonjs.com/typedoc/classes/BABYLON.PointerEventTypes#pointerpick)
+POINTERDOUBLETAP = Double-Clicking
+POINTERDOWN = Pressing a button down
+POINTERMOVE = Moving the mouse
+POINTERPICK = Clicking on a mesh
+POINTERTAP = Clicking
+POINTERUP = Letting go of the mouse button
+POINTERWHEEL = Mouse wheel is rotated
+
+scene.onPointerObservable.add(pointerInfo => {
+	console.log("Event " + pointerInfo.type + " at x: " + pointerInfo.event.offsetX + " y: " pointerInfo.event.offsetY);
+});
+
+pointerInfo here is a PointerInfo class object
+(https://doc.babylonjs.com/typedoc/classes/BABYLON.PointerInfo)
+Interesting properties are:
+- type (enum from one of the BABYLON.PointerEventTypes. ...)
+	As seen above, this is things like POINTERDOWN
+- event
+	- altKey:		If ALT key was held while event performed
+	- ctrlKey:		If Ctrl key was held while event performed
+	- shiftKey:		If Shift key was held while event performed
+	- button:		Value of single mouse button pressed
+	- buttons:		Value of all mouse buttons pressed
+	- inputIndex:	Even more types of clicks
+	- offsetX & Y:	Coords in container (starting in top right of scene)
+	- x & Y:		Coords in page
+	- clientX & Y	same as x & Y
+	- pageX & Y:	same as x & Y
+	- timestamp:	in ms since ?
+
+Coordinates:

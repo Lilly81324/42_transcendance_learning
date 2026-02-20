@@ -1,0 +1,60 @@
+name : NextJsTest
+
+
+services:
+  nestjs:
+    image: nestjs:1.0
+    build:
+      context: ./nestjs/
+      args:
+        NESTJS_PORT: "${NESTJS_PORT}"
+    container_name: nestjs
+    volumes:
+      - nestjs_data:/var/lib/nestjs
+    networks: [backend]
+    ports:
+      - "${NESTJS_PORT}:${NESTJS_PORT}"
+      - "2998:2998"
+    logging :
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:1.0
+    container_name: nginx
+    build:
+      context: ./nginx
+      args:
+        NGINX_PORT: "${NGINX_PORT}"
+        NEXTJS_PORT: "${NEXTJS_PORT}"
+    restart: on-failure
+    ports: 
+    - "${NGINX_PORT}:${NGINX_PORT}"
+    volumes:
+      - nginx_data:/nginx
+    networks: [backend]
+
+  nextjs:
+    image: nextjs:1.0
+    container_name: nextjs
+    build: 
+      context: ./nextjs/
+      args:
+        NESTJS_PORT: "${NESTJS_PORT}"
+        NEXTJS_PORT: "${NEXTJS_PORT}"
+        NGINX_PORT:  "${NGINX_PORT}"
+    volumes:
+      - nextjs_data:/nextjs
+    restart: on-failure
+    networks: [backend]
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  nginx_data:
+  nextjs_data:
+  nestjs_data:
