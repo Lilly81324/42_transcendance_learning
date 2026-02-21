@@ -1,5 +1,7 @@
 import { createScene } from "./createScene.js";
 import { registerClick } from "./registerClick.js";
+import * as GUI from 'babylonjs-gui';
+
 // Get the canvas element
 const canvas = document.getElementById("renderCanvas");
 // Generate the BABYLON 3D engine
