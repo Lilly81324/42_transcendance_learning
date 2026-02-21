@@ -5,7 +5,7 @@ import { createGui } from "./createGui.js"
  * @param canvas Canvas Element on the Page that handles camera controls
  * @param scene Scene to work on
  */
-export function createScene(canvas) {
+export function createScene(canvas, engine) {
 	// Create scene object
 	const scene = new BABYLON.Scene(engine);
 
