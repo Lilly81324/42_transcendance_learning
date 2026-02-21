@@ -6,7 +6,7 @@ const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
 // Create scene object
-const scene = createScene(canvas, scene);
+const scene = createScene(canvas);
 
 // Register to Central Gameplay Loop
 registerClick(scene, box, player);

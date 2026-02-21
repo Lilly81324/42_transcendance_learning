@@ -1,5 +1,4 @@
-import { createGround } from "./createGround.js";
-import { createCamera } from "./createCamera.js"
+import { createGui } from "./createGui.js"
 
 /**
  * @brief Handles setting up all the Objects and meshes for the scene
@@ -29,5 +28,8 @@ export function createScene(canvas) {
 
     // Our built-in 'ground' shape.
     var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+
+    const gui = createGui(scene, canvas);
+
 	return scene;
 };

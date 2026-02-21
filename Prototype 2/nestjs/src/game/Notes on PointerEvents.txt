@@ -9,7 +9,8 @@ POINTERUP = Letting go of the mouse button
 POINTERWHEEL = Mouse wheel is rotated
 
 scene.onPointerObservable.add(pointerInfo => {
-	console.log("Event " + pointerInfo.type + " at x: " + pointerInfo.event.offsetX + " y: " pointerInfo.event.offsetY);
+	if (pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN)
+		console.log("Event " + pointerInfo.type + " at x: " + pointerInfo.event.offsetX + " y: " + pointerInfo.event.offsetY);
 });
 
 pointerInfo here is a PointerInfo class object
@@ -31,3 +32,5 @@ Interesting properties are:
 	- timestamp:	in ms since ?
 
 Coordinates:
+
+
