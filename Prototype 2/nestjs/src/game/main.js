@@ -10,7 +10,7 @@ const engine = new BABYLON.Engine(canvas, true);
 const scene = createScene(canvas, engine);
 
 // Register to Central Gameplay Loop
-registerClick(scene, box, player);
+registerClick(scene);
 
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
