@@ -3,9 +3,9 @@
  * @param button Button object to work with
  * @param size 1 means use full canvas, 0 means non-existant
  */
-function setButtonSize(button, size)
+function setButtonSize(button, canvas, size)
 {
-    let frac = Math.min(window.canvas.height, window.canvas.width) * size;
+    let frac = Math.min(canvas.height, canvas.width) * size;
     button.widthInPixels = frac;
     button.heightInPixels = frac;
 }
@@ -38,7 +38,7 @@ export function createGui(scene, canvas)
     );
 
     const button = BABYLON.GUI.Button.CreateSimpleButton("send", "SEND");
-    setButtonSize(button, 0.2);
+    setButtonSize(button, canvas, 0.2);
     setButtonPos(button, canvas, 1, 1);
     button.color = "#FFF";
     button.onPointerUpObservable.add(() => {
