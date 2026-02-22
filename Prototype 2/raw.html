@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* Set up the canvas to be using the whole page */
+      html,
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+    <!-- This line loads BabylonJS, which allows usage of it -->
+  </head>
+  
+  <body>
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+    <!-- touch-action="none" for best results from PEP -->
+    
+    <!-- Get Earcut scripts for extruding Polygons -->
+    <script src="https://cdn.jsdelivr.net/npm/earcut@2.2.4/dist/earcut.min.js"></script>
+    <!-- Babylon functions -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+  	<!-- Socket.io Connection -->
+	<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <!-- Havoc Phys Engine -->
+     <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
+    <!-- Main script -->
+    <script type="module">
+		/**
+		 * @brief Set Buttons Size based on fraction
+		 * @param button Button object to work with
+		 * @param size 1 means use full canvas, 0 means non-existant
+		 */
+		function setButtonSize(button, canvas, size)
+		{
+			let frac = Math.min(canvas.height, canvas.width) * size;
+			button.widthInPixels = frac;
+			button.heightInPixels = frac;
+		}
+
+		/**
+		 * @brief Moves Button to position based on fractions
+		 * @note Buttons width and height need to be set with button.widthInPixels or this wont work
+		 * @param button Button object to work with
+		 * @param canvas Canvas to get limits of screen
+		 * @param pos_x 1=right, 0=middle, -1=left
+		 * @param pos_y 1=bottom, 0=middle, -1=top
+		 */
+		function setButtonPos(button, canvas, pos_x, pos_y)
+		{
+			button.left =  pos_x * ((canvas.width - button.widthInPixels) / 2);
+			button.top =  pos_y * ((canvas.height - button.heightInPixels) / 2);
+		}
+
+
+		/**
+		 * @brief Creates a GUI and Button
+		 * @param scene Scene to put button in 
+		 */
+		export function createGui(scene, canvas, socket)
+		{
+			const gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+				"GUI",
+				false,
+				scene,
+			);
+
+			const button = BABYLON.GUI.Button.CreateSimpleButton("send", "SEND");
+			setButtonSize(button, canvas, 0.2);
+			setButtonPos(button, canvas, 1, 1);
+			button.color = "#FFF";
+			button.onPointerUpObservable.add(() => {
+				if (socket && socket.connected) {
+					console.log("Sending message via Socekt.io");
+					socket.emit("message", "Button pressed!");
+				} else {
+					console.error("No Websocket Connection established");
+				}
+			})
+			gui.addControl(button);
+			return (gui)
+		}
+
+		/**
+		 * @brief Handles setting up all the Objects and meshes for the scene
+		 * @param canvas Canvas Element on the Page that handles camera controls
+		 * @param scene Scene to work on
+		 */
+		export function createScene(canvas, engine, socket) {
+			// Create scene object
+			const scene = new BABYLON.Scene(engine);
+
+			var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+			// This targets the camera to scene origin
+			camera.setTarget(BABYLON.Vector3.Zero());
+
+			// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+			var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+			// Default intensity is 1. Let's dim the light a small amount
+			light.intensity = 0.7;
+
+			// Our built-in 'sphere' shape.
+			var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
+
+			// Move the sphere upward 1/2 its height
+			sphere.position.y = 1;
+
+			// Our built-in 'ground' shape.
+			var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+
+			const gui = createGui(scene, canvas, socket);
+
+			return scene;
+		};
+
+		/**
+		 * @brief Register that on letting go of mouse button a message is logged
+		 */
+		export function registerClick(scene)
+		{
+			scene.onPointerObservable.add(pointerInfo => {
+			if (pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN)
+				console.log("Event " + pointerInfo.type + " at x: " + pointerInfo.event.offsetX + " y: " + pointerInfo.event.offsetY);
+			});
+		}
+
+		export function initWebSocket(url) {
+			const socket = io(url);
+
+			socket.on("connect", () => {
+				console.log("Connected to Backend");
+			});
+			
+			socket.on("message", (data) => {
+				console.log(`Message from server ${data}`);
+			});
+			
+			socket.on("connect_error", (err) => {
+				console.log("Error with websocket: ", err);
+			});
+
+			return (socket);
+		}
+
+		// Get the canvas element
+		const canvas = document.getElementById("renderCanvas");
+		// Generate the BABYLON 3D engine
+		const engine = new BABYLON.Engine(canvas, true);
+
+		const socket = initWebSocket("ws://localhost:8080");
+
+		// Create scene object
+		const scene = createScene(canvas, engine, socket);
+
+		// Register to Central Gameplay Loop
+		registerClick(scene);
+
+		// Register a render loop to repeatedly render the scene
+		engine.runRenderLoop(function () {
+			scene.render();
+		});
+
+		// Watch for browser/canvas resize events
+		window.addEventListener("resize", function () {
+			engine.resize();
+		});
+	</script>
+    </script>
+  </body>
+</html>
