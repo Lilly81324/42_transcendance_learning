@@ -8,7 +8,7 @@ const canvas = document.getElementById("renderCanvas");
 // Generate the BABYLON 3D engine
 const engine = new BABYLON.Engine(canvas, true);
 
-const socket = initWebSocket("ws://localhost:443");
+const socket = initWebSocket("ws://localhost:$NGINX_PORT");
 
 // Create scene object
 const scene = createScene(canvas, engine, socket);

@@ -6,4 +6,3 @@ export function buttonEvent(socket, scene)
 		ref.position.y = ref.position.y + 1;
 	});
 }
-	

@@ -24,6 +24,25 @@ function setButtonPos(button, canvas, pos_x, pos_y)
     button.top =  pos_y * ((canvas.height - button.heightInPixels) / 2);
 }
 
+function addSocketStateToUi(gui, canvas, socket)
+{
+    const socket_status = new BABYLON.GUI.TextBlock("socket_status", "Connection Status: Disconnected");
+    socket_status.fontSize = 24;
+    socket_status.color = "red";
+    const size = socket_status.fontSize.replace('px', '');
+    socket_status.left =  -1 * ((canvas.width - size * 15) / 2);
+    socket_status.top =  -1 * ((canvas.height - size) / 2);
+    gui.addControl(socket_status);
+
+    socket.on("connect", () => {
+        const size = socket_status.fontSize.replace('px', '');
+        socket_status.text = "Connection Status: Connected";
+        socket_status.color = "green";
+        socket_status.left =  -1 * ((canvas.width - size * 13.5) / 2);
+	});
+
+    return (gui)
+}
 
 /**
  * @brief Creates a GUI and Button
@@ -37,6 +56,8 @@ export function createGui(scene, canvas, socket)
         false,
         scene,
     );
+
+    addSocketStateToUi(gui, canvas, socket);
 
     const button = BABYLON.GUI.Button.CreateSimpleButton("send", "SEND");
     setButtonSize(button, canvas, 0.2);

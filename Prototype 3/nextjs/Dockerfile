@@ -4,6 +4,7 @@ FROM node:25-alpine AS builder
 # Store port as enviroment variable
 ARG NEXTJS_PORT NESTJS_PORT NGINX_PORT
 ENV NEXTJS_PORT=${NEXTJS_PORT}
+ENV NGINX_PORT=${NGINX_PORT}
 
 # For debugging
 RUN apk add bash curl
