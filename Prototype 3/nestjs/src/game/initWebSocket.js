@@ -5,9 +5,9 @@ export function initWebSocket(url) {
 		console.log("Connected to Backend");
 	});
 	
-	socket.on("msgToClient", (data) => {
-		console.log(`Message from server ${data}`);
-	});
+	// socket.on("msgToClient", (data) => {
+	// 	console.log(`Message from server ${data}`);
+	// });
 	
 	socket.on("connect_error", (error) => {
 		console.log("Error with websocket: ", error);

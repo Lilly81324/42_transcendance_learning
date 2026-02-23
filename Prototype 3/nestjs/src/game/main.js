@@ -1,6 +1,7 @@
 import { createScene } from "./createScene.js";
 import { registerClick } from "./registerClick.js";
 import { initWebSocket } from "./initWebSocket.js"
+import { buttonEvent } from "./buttonEvent.js";
 
 // Get the canvas element
 const canvas = document.getElementById("renderCanvas");
@@ -14,6 +15,8 @@ const scene = createScene(canvas, engine, socket);
 
 // Register to Central Gameplay Loop
 registerClick(scene);
+
+buttonEvent(socket, scene);
 
 // Register a render loop to repeatedly render the scene
 engine.runRenderLoop(function () {
