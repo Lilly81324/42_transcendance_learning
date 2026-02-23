@@ -41,6 +41,20 @@ function addSocketStateToUi(gui, canvas, socket)
         socket_status.left =  -1 * ((canvas.width - size * 13.5) / 2);
 	});
 
+    socket.on("disconnect", () => {
+        const size = socket_status.fontSize.replace('px', '');
+        socket_status.text = "Connection Status: Disconnected";
+        socket_status.color = "red";
+        socket_status.left =  -1 * ((canvas.width - size * 15) / 2);
+	});
+
+    socket.on("connect_error", () => {
+        const size = socket_status.fontSize.replace('px', '');
+        socket_status.text = "Connection Status: Disconnected";
+        socket_status.color = "red";
+        socket_status.left =  -1 * ((canvas.width - size * 15) / 2);
+	});
+
     return (gui)
 }
 
