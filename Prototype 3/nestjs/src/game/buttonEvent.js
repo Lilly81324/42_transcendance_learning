@@ -15,9 +15,3 @@ export function buttonEvent(socket, scene)
 			ref.position.y = pos - 0.5;
 	});
 }
-
-
-// d
-// ud
-// ud
-// u
