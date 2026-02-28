@@ -1,5 +1,9 @@
 {
 	"type": "template",
 	"matchId": 0,
+	"activePlayerId": 0,
+	"inventory": {
+
+	},
 	"seq": [0]
 }

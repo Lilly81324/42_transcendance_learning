@@ -1,0 +1,7 @@
+{
+	"type": "sc.active.player.changes",
+	"matchId": 0,
+	"activePlayerId": 0,
+	"turn": 0,
+	"seq": [0]
+}
