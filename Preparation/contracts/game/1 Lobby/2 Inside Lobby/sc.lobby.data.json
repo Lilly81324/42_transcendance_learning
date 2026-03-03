@@ -1,5 +1,5 @@
 {
-	"type": "sc.connection.attempt.success",
+	"type": "sc.lobby.data",
 	"matchId": 0,
 	"lobbyData": {
 		"players": [

@@ -1,7 +1,6 @@
 {
-	"type": "sc.active.player.changes",
+	"type": "sc.timer.over",
 	"matchId": 0,
 	"activePlayerId": 0,
-	"turn": 0,
 	"seq": [0]
 }
