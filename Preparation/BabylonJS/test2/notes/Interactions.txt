@@ -8,14 +8,15 @@ Chaining Actions:
 
 Actions with Conditions:
 	mesh.actionManager.registerAction(
-	new BABYLON.InterpolateValueAction(
-		BABYLON.ActionManager.OnPickTrigger,
-		camera,
-		"alpha",
-		0,
-		500,
-		new BABYLON.PredicateCondition(mesh.actionManager, function () {
-		return light.diffuse.equals(BABYLON.Color3.Red());
-		}),
+		new BABYLON.InterpolateValueAction(
+			BABYLON.ActionManager.OnPickTrigger,
+			camera,
+			"alpha",
+			0,
+			500,
+			new BABYLON.PredicateCondition(mesh.actionManager, function () {
+				return light.diffuse.equals(BABYLON.Color3.Red());
+			}
+		),
 	),
 	);

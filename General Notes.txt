@@ -1,0 +1,67 @@
+function wrapper_actions(scene) {
+    scene.actionManager = new BABYLON.ActionManager(scene);
+    scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        {
+            trigger: BABYLON.ActionManager.OnKeyDownTrigger,
+            parameter: "d"
+        },
+        () => {
+            console.log(scene.getMeshByName("obj").physicsAggregate.body.getAngularVelocity());
+            const target = scene.getMeshByName("obj");
+            // if (target.physicsAggregate.body.getAngularVelocity().x > 0.2)
+            //     return ;
+            let locationVector = target.getAbsolutePosition();
+            locationVector.x = locationVector.x + 1;
+            target.physicsAggregate.body.applyForce(new BABYLON.Vector3(0, 20, 0), locationVector);
+
+    }));
+}
+
+export const createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+
+    const hk = new BABYLON.HavokPlugin();
+    scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
+
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+    // This targets the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    // This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
+
+    const boll = BABYLON.MeshBuilder.CreateIcoSphere("obj", {subdivisions: 1}, scene);
+    boll.physicsAggregate = new BABYLON.PhysicsAggregate(
+        boll,
+        BABYLON.PhysicsShapeType.BOX,
+        {mass: 1, friction: 0.5},
+        scene);
+
+    const ground = BABYLON.MeshBuilder.CreateBox("ground", {width: 10, height: 0.1, depth: 10}, scene);
+    ground.position.y = -3;
+    ground.physicsAggregate = new BABYLON.PhysicsAggregate(
+        ground,
+        BABYLON.PhysicsShapeType.MESH,
+        {mass: 0, friction: 0.5},
+        scene)
+    // const phys = new BABYLON.PhysicsAggregate(
+    //     ground,
+    //     BABYLON.PhysicsShapeType.MESH,
+    //     {mass: 0, friction: 0.5},
+    //     scene)
+    // phys.body.getAngularVelocity();
+    ground.computeWorldMatrix(true);
+    wrapper_actions(scene);
+
+    return scene;
+};
