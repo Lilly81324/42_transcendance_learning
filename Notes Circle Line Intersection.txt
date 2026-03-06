@@ -1,0 +1,160 @@
+Understanding the formula / code ==============================================
+
+For 0, 1 or 2 points along our vector, 
+the distance to the circles center will be exaclty its radius r.
+
+So we can say, that a vector S going from our circles center point vector C, 
+to a vector (x * V + SV) for 0, 1 or 2 certain x values, 
+will have a length that is equal to the circles radius r. 
+r = length(x * V + SV - C)
+where
+A = Point A, the first of the two points we use
+A = Point A, the first of the two points we use
+SV = support vector (start point A)
+V = direction vector (B - A)
+x = decimal factor
+C = vector to middle point of circle
+r = radius of circle
+
+Getting the length of a vector means taking the square root of its x part squared + its y part squared
+root(x*x + y*y)
+
+We can avoid the expensive square root operation by squaring all
+
+r^2 = length(x * V + SV - C)^2
+
+Written by AI:
+We can use another vector D,
+which will be going from C to our support vector.
+D = SV - C
+This vector will be pointing from centre to, where SV = 0 * V
+
+We can then say, that going the specific distance to the point from our origin vector,
+will bring us to the point, just like how going from C to the point does.
+P(x) - C = D + x * V
+
+We know that the length of the vector from the circle to the point has
+to have the radius of the circle, so:
+length(P(x) - C) = r
+
+And if we insert the previous formula, we get:
+r^2 = length(D + x * V)^2
+
+Because of some magical linear algebra term, that Johannes will have to explain to me later,
+we know that
+length(A)^2 = A * A
+
+Which means we can do:
+r^2 = (D + x * V) * (D + x * V)
+
+Then multiply brackets (erste Binomialformel):
+r^2 = D*D + x*V*D + x*V*D + x*x*V*V
+
+Where we can simplify multiplication of x*V*D and x*D*V to:
+r^2 = D*D + 2*x*V*D + x*x*V*V
+
+Subtract r^2 to get equation to equal value
+0 = xxVV + x2VD + DD - rr
+
+We can solve equations of the type:
+0 = axx + bx + c
+into the formula for getting 0 points:
+x1,2 = (-b +/- root(b*b - 4ac))/2a
+
+With our previous equation we have
+a = V*V
+b = 2*V*D
+c = D*D - r*r
+Which, when put into the formula gives:
+x1,2 = (-(2*V*D) +/- root((2*V*D)*(2*V*D) - 4(V*V)(D*D - r*r)))/2V*V
+
+
+Code for this: ================================================================
+function multVectors(V1, V2)
+{ return (V1[0] * V2[0] + V1[1] * V2[1]); }
+
+function subVectors(V1, V2)
+{   const result = [V1[0] - V2[0], V1[1] - V2[1]];
+	return (result);  }
+
+// Insert Values
+// First point
+const P1 = [1, 4];
+// Second point
+const P2 = [5, 5];
+// Pos of circle
+const C = [3, 5];
+// Radius of circle
+const r = 1;
+
+// Calculate helper values
+const SV = P1;
+const V = [P2[0] - P1[0], P2[1] - P1[1]];
+const D = subVectors(SV, C);
+
+// Get values for midnight formula
+const a = multVectors(V, V);
+const b = multVectors(V, D) * 2;
+const c = multVectors(D, D) - r * r;
+
+// Insert into midnight formula
+const result1 = (-b + Math.sqrt(b*b - 4*a*c))/(2*a)
+const result2 = (-b - Math.sqrt(b*b - 4*a*c))/(2*a)
+
+// If more or less then 0-1 * vector, then its not in range
+const results = [];
+if (result1 >= 0 && result1 <= 1)
+    results.push(result1);
+if (result2 >= 0 && result2 <= 1)
+    results.push(result2);
+
+// "results" contains factors, that describe a fraction of the vector from P1 to P2, where the circle crosses the vector
+// Multiply the vector from P1 to P2 by that value and add P1 to get the coordinates for that point
+console.log(results);
+
+Using this to modify mesh =====================================================
+
+Go through all coordinates in the mesh array.
+Run the above code for all.
+Once a pair of points yields >1 data in the result array,
+do the following:
+Get the point on the line, by using:
+P1 = Point 1
+P2 = Point 2
+V = Vector from P1 -> P2 = P2 - P1
+const V = [P2[0] - P1[0], P2[1] - P1[1]];
+x = result from calculated numbers
+P3 = P1 + x * V
+
+Now, if there are > 2 points 
+
+Then keep going through all the coordinates in the array mesh,
+
+Second, get the second point with the other result data
+P4 = P1 + x * V
+
+
+
+
+
+===============================================================================
+
+THIS IS REDUNDANT, COMPUTERS WORK BEST WITH THE MITTERNACHTSFORMEL, NOT THE PQFORMEL
+There are at least 2 types of quadratic formulas, the normalised and the common one.
+Common:
+a*x^2 + b*x + c = 0
+Normalised:
+x^2 + p*x + q = 0
+We have the first and need to turn it into the latter one.
+With our previous equation we have
+a = V*V
+b = 2*V*D
+c = D*D - r*r
+Divide by a to get the normalised pq form
+0 = xx + x(2VD)/(VV) + (DD - rr)/VV
+Now we can get our p and q and use the pq formula
+p = (2VD)/(VV)
+q = (DD - rr)/VV
+Remember the pq formula song!
+x = -p/2 +/- root(p/2 - q)
+=========================================================================================
