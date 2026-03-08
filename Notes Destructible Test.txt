@@ -1,0 +1,73 @@
+function createPlayer(scene) {
+    // Create Mesh
+    var box1 = BABYLON.MeshBuilder.CreateBox("player", {height: 2,}, scene);
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {segments: 10}, scene);
+    sphere.position.y = 1;
+    var player = BABYLON.Mesh.MergeMeshes([box1, sphere], true, false, null, false, false);
+    player.position.y = 2;
+
+    let left = false;
+    let right = false;
+    let up = false;
+    let down = false;
+    const speed = 0.05;
+    const rot_speed = 0.025;
+    scene.onKeyboardObservable.add((kbInfo) => {
+        // Is Button down or up?
+        let setBool = kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN ? true : false;
+
+        if (kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN || 
+            kbInfo.type == BABYLON.KeyboardEventTypes.KEYUP){
+            if (kbInfo.event.key == "d")
+                right = setBool;
+            if (kbInfo.event.key == "a")
+                left = setBool;
+            if (kbInfo.event.key == "w")
+                up = setBool;
+            if (kbInfo.event.key == "s")
+                down = setBool;
+        }
+    });
+    scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        BABYLON.ActionManager.OnEveryFrameTrigger,
+        () => {
+            if (left)
+                player.rotation.z = player.rotation.z + rot_speed;
+            if (right)
+                sphere.rotation.z = player.rotation.z - rot_speed;
+            if (up)
+                player.position.x = player.position.x + speed;
+            if (down)
+                player.position.x = player.position.x - speed;
+        }
+    ));
+    return (player);
+}
+
+export const createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+    scene.actionManager = new BABYLON.ActionManager(scene);
+
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+    // This targets the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    // This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
+
+    // Our built-in 'ground' shape.
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+
+    var player = createPlayer(scene);
+
+    return scene;
+};

@@ -1,0 +1,37 @@
+
+// User interaction can happen through 3 ways: Clicking UI, Using the Keyboard or the Mouse
+// UI is its kind of thing, but keyboard and mouse can be handled in 3 different ways.
+// If you want mouse interactions with a specific mesh, use mesh.actionManagers
+// If you want general mouse interactions, use scene.onPointerObservable
+// If you want something every frame, scene.actionManager
+// If you want key interactionns, 
+
+// Scene Action Manager, 3 triggers: every frame, key pressed, key released
+scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+	{
+		trigger: BABYLON.ActionManager.OnKeyDownTrigger,
+		parameter: "d"
+	},
+	() => {
+		alert("Hello world")
+   	}
+));
+
+// Scene Observables: 2 triggers: On Key, On Pointer
+scene.onKeyboardObservable.add((kbInfo) => {
+  if (kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN) {
+      console.log("KEY DOWN: ", kbInfo.event.key);
+      alert("Hello world"); }
+});
+scene.onPointerObservable.add((pointerInfo) => {
+  if (pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN) {
+      console.log("POINTER DOWN");
+      alert("Hello world"); }
+});
+
+// Meshes can have triggers, that activate when the mouse interacts with the mesh, but ONLY that
+mesh.actionManager = new BABYLON.ActionManager(scene);
+mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+    BABYLON.ActionManager.OnPickDownTrigger, () => { alert("Hello World");}
+));
+
