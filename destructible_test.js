@@ -1,0 +1,94 @@
+function onCollision(projectile, scene) {
+    const ground = scene.getMeshByName("ground");
+	const cutter = BABYLON.MeshBuilder.CreateCylinder("positive", {height: 3, diameter: 1}, scene);
+    cutter.rotation.x = Math.PI / 2
+	cutter.position = projectile.position;
+	cutter.setEnabled(false);
+	const cutterCSG = BABYLON.CSG.FromMesh(cutter);
+	const groundCSG = BABYLON.CSG.FromMesh(ground);
+	const result = groundCSG.subtract(cutterCSG);
+	ground.dispose();
+	const resultMesh = result.toMesh("ground", null, scene);
+    cutter.dispose();
+    projectile.dispose();
+    resultMesh.physicsAggregate = new BABYLON.PhysicsAggregate(resultMesh, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, scene);
+}
+
+function onButtonPress(scene) {
+    new_projectile.position = new BABYLON.Vector3(-2, 3, 0);
+    new_projectile.rotation.z = -Math.PI / 4 + (Math.PI / 4 * ( 2 * Math.random() - 1));
+    const force = 20;
+    const frac_x = -Math.sin(new_projectile.rotation.z) * force;
+    const frac_y = Math.cos(new_projectile.rotation.z) * force;
+    new_projectile.physicsAggregate = new BABYLON.PhysicsAggregate(new_projectile, BABYLON.PhysicsShapeType.CYLINDER, {mass: 0.1,  friction: 0.5,  }, scene);
+    new_projectile.physicsAggregate.body.setCollisionCallbackEnabled(true);
+    new_projectile.physicsAggregate.body.applyForce(new BABYLON.Vector3(frac_x, frac_y, 0), new_projectile.getAbsolutePosition());
+    new_projectile.physicsAggregate.body.getCollisionObservable().add((event) => {
+            onCollision(new_projectile, scene);
+    });
+}
+
+export function createGui(scene, canvas)
+{
+    let count = 0;
+    const gui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+        "GUI",
+        false,
+        scene,
+    );
+
+
+    const button = BABYLON.GUI.Button.CreateSimpleButton("send", "SEND");
+    setButtonSize(button, canvas, 0.2);
+    setButtonPos(button, canvas, 1, 1);
+    button.color = "#FFF";
+    button.onPointerUpObservable.add(() => {
+        onButtonPress(scene);
+    })
+    gui.addControl(button);
+    return (gui)
+}
+
+export const createScene = function () {
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    // Add Havoc Phys Engine and Gravity to scene
+    const hk = new BABYLON.HavokPlugin();
+    scene.enablePhysics(new BABYLON.Vector3(0, -9.8 / 2, 0), hk);
+
+    // This creates and positions a free camera (non-mesh)
+    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+
+    // This targets the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
+
+    // This attaches the camera to the canvas
+    camera.attachControl(canvas, true);
+
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.7;
+
+    // Our built-in 'sphere' shape.
+    const ground = BABYLON.MeshBuilder.CreateBox("ground", {width: 5.5, height: 4, depth: 0.3}, scene);
+    ground.rotation.z = Math.PI / 8;
+
+    // Move the sphere upward 1/2 its height
+    ground.position.y = 0;
+    ground.physicsAggregate = new BABYLON.PhysicsAggregate(
+        ground,
+        BABYLON.PhysicsShapeType.BOX,
+        { mass: 0, friction: 0.5 },
+        scene);
+    ground.physicsAggregate.body.setCollisionCallbackEnabled(true);
+
+    var projectile_list = [];
+
+    createGui(scene, window.canvas);
+
+
+    return scene;
+};
