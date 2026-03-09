@@ -1,17 +1,47 @@
-function createPlayer(scene, ground) {
+function everyFrame(scene, projectiles, inputs) {
+    const magnitude = 0.1;
+    const map_boundary = 5;
+    const speed = 0.05;
+    const rot_speed = 0.025;
+    const player = scene.getMeshByName("player");
+    scene.actionManager = new BABYLON.ActionManager();
+    scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+        BABYLON.ActionManager.OnEveryFrameTrigger,
+        () => {
+            if (inputs.left)
+                player.rotation.z = player.rotation.z + rot_speed;
+            if (inputs.right)
+                player.rotation.z = player.rotation.z - rot_speed;
+            if (inputs.up)
+                player.position.x = player.position.x + speed;
+            if (inputs.down)
+                player.position.x = player.position.x - speed;
+            for (var i = 0; i < projectiles.length; i++) {
+                var proj = projectiles[i]
+                if (proj.position.x > map_boundary || proj.position.x < -map_boundary || proj.position.y > map_boundary || proj.position.y < -map_boundary)
+                {
+                    proj.dispose();
+                    projectiles.splice(i, 1);
+                    i--;
+                    continue ;
+                }
+                var direction = angleToVector(proj.rotation.z);
+                proj.position.x += direction[0] * magnitude;
+                proj.position.y += direction[1] * magnitude;
+            }
+        }
+    ));
+}
+
+function createPlayer(scene, ground, inputs) {
     // Create Mesh
     var box1 = BABYLON.MeshBuilder.CreateBox("player", {size: 0.5, height: 0.7,}, scene);
     var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 0.5, segments: 10}, scene);
     sphere.position.y = 0.35;
     var player = BABYLON.Mesh.MergeMeshes([box1, sphere], true, false, null, false, false);
     player.position.y = 2;
+    player.name = "player";
 
-    let left = false;
-    let right = false;
-    let up = false;
-    let down = false;
-    const speed = 0.05;
-    const rot_speed = 0.025;
     scene.onKeyboardObservable.add((kbInfo) => {
         // Is Button down or up?
         let setBool = kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN ? true : false;
@@ -19,28 +49,15 @@ function createPlayer(scene, ground) {
         if (kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN || 
             kbInfo.type == BABYLON.KeyboardEventTypes.KEYUP) {
             if (kbInfo.event.key == "a")
-                left = setBool;
+                inputs.left = setBool;
             if (kbInfo.event.key == "d")
-                right = setBool;
+                inputs.right = setBool;
             if (kbInfo.event.key == "w")
-                up = setBool;
+                inputs.up = setBool;
             if (kbInfo.event.key == "s")
-                down = setBool;
+                inputs.down = setBool;
         }
     });
-    scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnEveryFrameTrigger,
-        () => {
-            if (left)
-                player.rotation.z = player.rotation.z + rot_speed;
-            if (right)
-                player.rotation.z = player.rotation.z - rot_speed;
-            if (up)
-                player.position.x = player.position.x + speed;
-            if (down)
-                player.position.x = player.position.x - speed;
-        }
-    ));
     player.actionManager = new BABYLON.ActionManager();
     player.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
         {
@@ -64,7 +81,7 @@ function angleToVector(angle) {
 function registerProjectiles(scene, player) {
     var projectiles = [];
     const magnitude = 0.4;
-    proj_counter = 0;
+    var proj_counter = 0;
     scene.onKeyboardObservable.add((kbInfo) => {
     if (kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN &&
         kbInfo.event.key == " ")
@@ -84,30 +101,6 @@ function registerProjectiles(scene, player) {
         }
     });
     return (projectiles);
-}
-
-function moveProjectiles(scene, projectiles) {
-    const magnitude = 0.1;
-    const map_boundary = 5;
-    scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
-        BABYLON.ActionManager.OnEveryFrameTrigger,
-        () => {
-            for (var i = 0; i < projectiles.length; i++) {
-                var proj = projectiles[i]
-                if (proj.position.x > map_boundary || proj.position.x < -map_boundary || proj.position.y > map_boundary || proj.position.y < -map_boundary)
-                {
-                    proj.dispose();
-                    projectiles.splice(i, 1);
-                    i--;
-                    continue ;
-                }
-                var direction = angleToVector(proj.rotation.z);
-                console.log(direction);
-                proj.position.x += direction[0] * magnitude;
-                proj.position.y += direction[1] * magnitude;
-            }
-        }
-    ));
 }
 
 function createGround(scene, player)
@@ -155,9 +148,10 @@ export const createScene = function () {
     // Our built-in 'ground' shape.
     var ground = createGround(scene);
 
-    var player = createPlayer(scene, ground);
+    var inputs = {left: false, right: false, up: false, down: false};
+    var player = createPlayer(scene, ground, inputs);
     var projectiles = registerProjectiles(scene, player);
-    moveProjectiles(scene, projectiles);
+    everyFrame(scene, projectiles, inputs);
 
     return scene;
 };
