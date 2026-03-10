@@ -87,7 +87,7 @@ function registerProjectiles(game, player) {
     return (projectiles);
 }
 
-export const createScene = function (game, canvas) {
+export function createScene (game, canvas) {
     // This creates and positions a free camera (non-mesh)
     var camera = createCamera(game.scene, canvas, 0, 0, 10)
 
