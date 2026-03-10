@@ -115,7 +115,7 @@ function redoArray(array, explosionX, explosionY, radius) {
 				insideExplosion = true;
 				newArray.push(new BABYLON.Vector3(intersectPoints[0].x, 0, intersectPoints[0].y));
 			}
-			else {
+			else if (intersectPoints.length === 2) {
 				console.log("Entering and Exiting");
 				newArray.push(new BABYLON.Vector3(intersectPoints[0].x, 0, intersectPoints[0].y));
 				onExitingExplo(newArray, intersectPoints[1]);
