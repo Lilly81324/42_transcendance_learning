@@ -1,6 +1,6 @@
-import { createScene } from "./building/createScene.js";
+import { createScene } from "./createScene.js";
 import TerrainDestruction from "./TerrainDestruction.js";
-import Vector from "./Vector.js";
+import Vector from "./Vector";
 
 // Get the canvas element
 const canvas = document.getElementById("renderCanvas");
