@@ -52,6 +52,10 @@ export class Vector {
 		return (this);
 	}
 
+	length() {
+		return (Math.sqrt(this.x *this.x + this.y * this.y));
+	}
+
 	// Accept 1 vector and 1 number
 	static mult(input1, input2) {
 		if (typeof input1 == "number" && typeof input2 == "object" && input2.constructor.name == "Vector")
