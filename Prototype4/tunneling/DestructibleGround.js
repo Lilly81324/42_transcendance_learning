@@ -112,7 +112,7 @@ export class DestructibleGround {
 		this.groundMesh = BABYLON.MeshBuilder.ExtrudePolygon(this.name, {shape: this.array, depth: this.depth}, this.scene);
 		this.groundMesh.rotation.x = -Math.PI / 2;
 		this.groundMesh.position = new BABYLON.Vector3(0, 0, -this.depth / 2);
-		this.groundMesh.physicsAggregate = new BABYLON.PhysicsAggregate(groundMesh, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, this.scene);
+		this.groundMesh.physicsAggregate = new BABYLON.PhysicsAggregate(this.groundMesh, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, this.scene);
 	}
 
 
