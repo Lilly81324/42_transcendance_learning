@@ -148,7 +148,7 @@ export class DestructibleGround {
 		const tesselationCount = 6;
 		const initialAngleOffset = (line.angle()) % (Math.PI * 2);
 		const midPointAngle = invertCrossVect.angle() % (Math.PI * 2);
-		const angleDiff = midPointAngle - initialAngleOffset;
+		let angleDiff = midPointAngle - initialAngleOffset;
 
 		// Ensure we take the shortest path around the circle
 		if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
