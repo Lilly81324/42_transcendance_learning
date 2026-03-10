@@ -1,5 +1,5 @@
 import { createScene } from "./createScene.js";
-import { DestructibleGround } from "./DestructibleGroundjs";
+import { DestructibleGround } from "./DestructibleGround.js";
 import { Vector } from "./Vector.js";
 
 // Get the canvas element
