@@ -62,7 +62,7 @@ export class Vector {
 	 * @returns number representing the cross product of input with this vector
 	 */
 	crossproduct(input) {
-		return (this.x * input.y + this.y * input.x);
+		return (this.x * input.y - this.y * input.x);
 	}
 
 	/**
@@ -126,7 +126,7 @@ export class Vector {
 	 * @returns number representing the cross product of input
 	 */
 	static crossproduct(input1, input2) {
-		return (input1.x * input2.y + input1.y * input2.x);
+		return (input1.x * input2.y - input1.y * input2.x);
 	}
 
 	/**
