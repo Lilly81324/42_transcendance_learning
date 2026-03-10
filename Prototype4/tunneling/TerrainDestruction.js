@@ -1,4 +1,4 @@
-import Vector from "./Vector.js";
+import { Vector } from "./Vector.js";
 
 // Go through each vector in the array, get the points of contact
 export class DestructibleGround {
