@@ -56,7 +56,7 @@ function angleToVector(angle) {
 function registerProjectiles(game, player) {
     var projectiles = [];
     const magnitude = 0.4;
-    proj_counter = 0;
+    let proj_counter = 0;
     game.scene.onKeyboardObservable.add((kbInfo) => {
     if (kbInfo.type == BABYLON.KeyboardEventTypes.KEYDOWN &&
         kbInfo.event.key == " ")
