@@ -1,7 +1,6 @@
 import { createScene } from "./building/createScene.js";
-import { registerMovement } from "./running/registerMovement.js";
-import { lock2d } from "./running/lock2d.js";
-import { gameWin } from "./running/gameWin.js";
+import TerrainDestruction from "./TerrainDestruction.js";
+import Vector from "./Vector.js";
 
 // Get the canvas element
 const canvas = document.getElementById("renderCanvas");
