@@ -1,4 +1,4 @@
-import createScene from "./createScene.js";
+import { createScene } from "./createScene.js";
 import TerrainDestruction from "./TerrainDestruction.js";
 import Vector from "./Vector.js";
 

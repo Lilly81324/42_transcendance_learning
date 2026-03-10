@@ -1,4 +1,4 @@
-import createCamera from "./createCamera.js";
+import { createCamera } from "./createCamera.js";
 
 function createPlayer(scene) {
     // Create Mesh
