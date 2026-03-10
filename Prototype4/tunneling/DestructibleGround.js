@@ -123,7 +123,7 @@ export class DestructibleGround {
 	* @param exitPoint Vector with coordinates, where line exits explosion
 	* @param radius number for radius of explosion
 	*/
-	#onExitingExplo(newArray, explosionPoint, exitPoint, radius) {
+	onExitingExplo(newArray, explosionPoint, exitPoint, radius) {
 		// Prepare vectors for crossproduct
 		const entryPoint = new Vector(newArray[newArray.length - 1].x, newArray[newArray.length - 1].z);
 		const line = Vector.sub(exitPoint, entryPoint);
@@ -178,7 +178,7 @@ export class DestructibleGround {
 	 * @param radius number for radius of explosion
 	 * @returns true if point is inside explosion, false otherwise
 	 */
-	#insideExploCheck(firstX, firstY, explosionPoint, radius) {
+	insideExploCheck(firstX, firstY, explosionPoint, radius) {
 		const point1 = new Vector(firstX, firstY);
 		point1.sub(explosionPoint);
 		if (point1.length() <= radius)
@@ -195,7 +195,7 @@ export class DestructibleGround {
 	 * @returns Array of 0-2 Vectors pointing to Intersection points of circle and line
 	 * @note For more details on this calculation, look at "Notes Circle Line Intersection.txt"
 	 */
-	#checkIntersection(point1, point2, exploPoint, radius, tolerance) {
+	checkIntersection(point1, point2, exploPoint, radius, tolerance) {
 		// Calculate helper values
 		const V = Vector.sub(point2, point1);
 		const D = Vector.sub(point1, exploPoint);
