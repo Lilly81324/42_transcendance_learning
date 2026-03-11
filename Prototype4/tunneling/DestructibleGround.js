@@ -63,24 +63,20 @@ export class DestructibleGround {
 
 			const point1 = new Vector(array[currentIndex].x, array[currentIndex].z);
 			const point2 = new Vector(array[nextIndex].x, array[nextIndex].z);
-			console.log("Going through points: P1: " + point1.x + ",", + point1.y + " P2: " + point2.x + ", ", + point2.y);
 			const intersectPoints = this.checkIntersection(point1, point2, explosionPoint, radius, 0.00001);
 
 			if (!insideExplosion) {
 				newArray.push(new BABYLON.Vector3(point1.x, 0, point1.y));
 				if (intersectPoints.length == 1) {
-					console.log("Entering");
 					insideExplosion = true;
 					newArray.push(new BABYLON.Vector3(intersectPoints[0].x, 0, intersectPoints[0].y));
 				}
 				else if (intersectPoints.length === 2) {
-					console.log("Entering and Exiting");
 					newArray.push(new BABYLON.Vector3(intersectPoints[0].x, 0, intersectPoints[0].y));
 					this.onExitingExplo(newArray, explosionPoint, intersectPoints[1], radius);
 				}
 			}
 			else if (intersectPoints.length == 1) {
-					console.log("Exiting");
 					insideExplosion = false;
 					this.onExitingExplo(newArray, explosionPoint, intersectPoints[0], radius);
 			}
@@ -127,43 +123,33 @@ export class DestructibleGround {
 		// Prepare vectors for crossproduct
 		const entryPoint = new Vector(newArray[newArray.length - 1].x, newArray[newArray.length - 1].z);
 		const line = Vector.sub(exitPoint, entryPoint);
-		const toExplosion = Vector.sub(explosionPoint, entryPoint);
+		const exploToEntry = Vector.sub(entryPoint, explosionPoint);
+		const exploToExit = Vector.sub(exitPoint, explosionPoint);
 
-		// Crossproduct indicates which half of the line we care about
-		const cross = Vector.crossproduct(line, toExplosion);
-
-		// Get vector from line to the side that is without the mesh
-		let invertCrossVect;
-		if (cross > 0)
-			invertCrossVect = new Vector(line.y, -line.x);
-		else if (cross < 0)
-			invertCrossVect = new Vector(-line.y, line.x);
-		else
-		{
-			console.log("Error, explosion point is exactly on terrain, needs to be slightly above");
-			return ;
-		}
-
+		//
 		// Get angles of entrance and middle point
-		const tesselationCount = 6;
-		const initialAngleOffset = (line.angle()) % (Math.PI * 2);
-		const midPointAngle = invertCrossVect.angle() % (Math.PI * 2);
-		let angleEachStep;
-		if (midPointAngle > initialAngleOffset)
-			angleEachStep = Math.PI / (tesselationCount + 1)
-		else
-			angleEachStep = -Math.PI / (tesselationCount + 1)
-		console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
+		const tessalationCount = 6;
+		const startAngle = exploToEntry.angle();
+		const endAngle = exploToExit.angle();
+		const angleDiff = endAngle - startAngle;
+		if (this.debug) console.log("Start at: ", startAngle / Math.PI * 180);
+		if (this.debug) console.log("End at: ", endAngle / Math.PI * 180);
+		if (this.debug) console.log("Diff at: ", angleDiff / Math.PI * 180);
+
+		// Divide the shortest path by the steps
+		const angleEachStep = angleDiff  / (tessalationCount);
+		if (this.debug) console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
 
 		// Walk along explosions surface, putting tesselationCount points into the newArray
-		for (let i = tesselationCount; i > 0; i--) {
-			// console.log("For angle ", (initialAngleOffset + angleEachStep * i) / Math.PI * 180);
+		for (let i = 1; i < tessalationCount; i++) {
+			const angle = (startAngle + angleEachStep * i) % (Math.PI * 2);
+			if (this.debug) console.log("For angle ", (angle) / Math.PI * 180);
 			// console.log("X Axis diff ", -Math.sin(initialAngleOffset + angleEachStep * i));
-			// console.log("Y Axis diff ", Math.cos(initialAngleOffset + angleEachStep * i));
+			// console.log("Y Axis diff ", Math.cos(initialAngleOffset + angleEachStep * i));s
 			newArray.push(new BABYLON.Vector3(
-				-Math.sin(initialAngleOffset + angleEachStep * i) * radius + explosionPoint.x,
+				-Math.sin(angle) * radius + explosionPoint.x,
 				0, 
-				Math.cos(initialAngleOffset + angleEachStep * i) * radius + explosionPoint.y
+				Math.cos(angle) * radius + explosionPoint.y
 			));
 		}
 		newArray.push(new BABYLON.Vector3(exitPoint.x, 0, exitPoint.y));

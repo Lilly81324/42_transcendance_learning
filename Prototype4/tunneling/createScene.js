@@ -29,18 +29,26 @@ function createPlayer(scene) {
                 up = setBool;
             if (kbInfo.event.key == "s")
                 down = setBool;
+            if (kbInfo.event.key == "q")
+                q = setBool;
+            if (kbInfo.event.key == "e")
+                e = setBool;
         }
     });
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnEveryFrameTrigger,
         () => {
-            if (left)
+            if (rot_r)
                 player.rotation.z = player.rotation.z + rot_speed;
-            if (right)
+            if (rot_l)
                 player.rotation.z = player.rotation.z - rot_speed;
             if (up)
-                player.position.x = player.position.x + speed;
+                player.position.y = player.position.y + speed;
             if (down)
+                player.position.y = player.position.y - speed;
+            if (right)
+                player.position.x = player.position.x + speed;
+            if (left)
                 player.position.x = player.position.x - speed;
         }
     ));
