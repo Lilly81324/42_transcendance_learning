@@ -148,14 +148,11 @@ export class DestructibleGround {
 		const tesselationCount = 6;
 		const initialAngleOffset = (line.angle()) % (Math.PI * 2);
 		const midPointAngle = invertCrossVect.angle() % (Math.PI * 2);
-		let angleDiff = midPointAngle - initialAngleOffset;
-
-		// Ensure we take the shortest path around the circle
-		if (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-		if (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-		
-		// Divide the shortest path by the steps
-		let angleEachStep = (angleDiff * 2) / (tesselationCount + 1);
+		let angleEachStep;
+		if (midPointAngle > initialAngleOffset)
+			angleEachStep = Math.PI / (tesselationCount + 1)
+		else
+			angleEachStep = -Math.PI / (tesselationCount + 1)
 		console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
 
 		// Walk along explosions surface, putting tesselationCount points into the newArray
