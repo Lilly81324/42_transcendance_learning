@@ -126,11 +126,13 @@ export class DestructibleGround {
 		const exploToEntry = Vector.sub(entryPoint, explosionPoint);
 		const exploToExit = Vector.sub(exitPoint, explosionPoint);
 
-		//
 		// Get angles of entrance and middle point
 		const tessalationCount = 6;
 		const startAngle = exploToEntry.angle();
 		const endAngle = exploToExit.angle();
+		// Adjust for when endAngle would go over 360 degrees, by adjusting startAngle
+			if (endAngle > 180)
+				startAngle += Math.PI * 2;
 		const angleDiff = endAngle - startAngle;
 		if (this.debug) console.log("Start at: ", startAngle / Math.PI * 180);
 		if (this.debug) console.log("End at: ", endAngle / Math.PI * 180);
