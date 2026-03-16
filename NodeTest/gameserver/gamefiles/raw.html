@@ -21,12 +21,39 @@
   </head>
   
   <body>
+  	<!-- Socket.io Connection -->
+	  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
     <canvas id="renderCanvas" touch-action="none"></canvas>
     <!-- Babylon functions -->
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
 
     <!-- Main script -->
     <script>
+
+	function initWebSocket(url) {
+		const socket = io(url, {
+			transports: ['websocket']
+		});
+
+		socket.on("connect", () => {
+			console.log("Connected to Backend");
+		});
+		
+		socket.on("msgToClient", (data) => {
+			console.log(`Message from server ${data}`);
+		});
+		
+		socket.on("connect_error", (error) => {
+			console.log("Error with websocket: ", error);
+		});
+		
+		socket.on("disconnect", () => {
+			console.log("Connection closed");
+		});
+
+		return (socket);
+	}
 
 	function circlingWrapper(scene, diameterBigBoll, diameterSmolBoll) {
 		let i = 0;
@@ -90,6 +117,8 @@
 
 	const canvas = document.getElementById("renderCanvas"); // Get the canvas element
 	const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+	const socket = initWebSocket("ws://localhost:$NGINX_PORT");
 
 	// Create meshes
 	const scene = createScene();

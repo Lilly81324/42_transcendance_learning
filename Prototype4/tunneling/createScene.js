@@ -13,6 +13,8 @@ function createPlayer(scene) {
     let right = false;
     let up = false;
     let down = false;
+    let rot_r = false;
+    let rot_l = false;
     const speed = 0.05;
     const rot_speed = 0.025;
     scene.onKeyboardObservable.add((kbInfo) => {
@@ -30,17 +32,17 @@ function createPlayer(scene) {
             if (kbInfo.event.key == "s")
                 down = setBool;
             if (kbInfo.event.key == "q")
-                q = setBool;
+                rot_r = setBool;
             if (kbInfo.event.key == "e")
-                e = setBool;
+                rot_l = setBool;
         }
     });
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnEveryFrameTrigger,
         () => {
-            if (rot_r)
-                player.rotation.z = player.rotation.z + rot_speed;
             if (rot_l)
+                player.rotation.z = player.rotation.z + rot_speed;
+            if (rot_r)
                 player.rotation.z = player.rotation.z - rot_speed;
             if (up)
                 player.position.y = player.position.y + speed;
