@@ -127,35 +127,34 @@ export class DestructibleGround {
 		const exploToExit = Vector.sub(exitPoint, explosionPoint);
 
 		// Get angles of entrance and middle point
-		const tessalationCount = 6;
-		const startAngle = exploToEntry.angle();
+		const tessalationCount = 20;
+		var startAngle = exploToEntry.angle();
 		const endAngle = exploToExit.angle();
-		// Adjust for when endAngle would go over 360 degrees, by adjusting startAngle
-			if (endAngle > 180)
-				startAngle += Math.PI * 2;
+		if (endAngle >= Math.PI)
+			startAngle += Math.PI * 2;
 		const angleDiff = endAngle - startAngle;
-		if (this.debug) console.log("Start at: ", startAngle / Math.PI * 180);
-		if (this.debug) console.log("End at: ", endAngle / Math.PI * 180);
-		if (this.debug) console.log("Diff at: ", angleDiff / Math.PI * 180);
+		console.log("Start at: ", startAngle / Math.PI * 180);
+		console.log("End at: ", endAngle / Math.PI * 180);
+		console.log("Diff at: ", angleDiff / Math.PI * 180);
 
 		// Divide the shortest path by the steps
 		const angleEachStep = angleDiff  / (tessalationCount);
-		if (this.debug) console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
+		console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
 
 		// Walk along explosions surface, putting tesselationCount points into the newArray
 		for (let i = 1; i < tessalationCount; i++) {
-			const angle = (startAngle + angleEachStep * i) % (Math.PI * 2);
-			if (this.debug) console.log("For angle ", (angle) / Math.PI * 180);
+			console.log("For angle ", (startAngle + angleEachStep * i) / Math.PI * 180);
 			// console.log("X Axis diff ", -Math.sin(initialAngleOffset + angleEachStep * i));
-			// console.log("Y Axis diff ", Math.cos(initialAngleOffset + angleEachStep * i));s
+			// console.log("Y Axis diff ", Math.cos(initialAngleOffset + angleEachStep * i));
 			newArray.push(new BABYLON.Vector3(
-				-Math.sin(angle) * radius + explosionPoint.x,
+				-Math.sin(startAngle + angleEachStep * i) * radius + explosionPoint.x,
 				0, 
-				Math.cos(angle) * radius + explosionPoint.y
+				Math.cos(startAngle + angleEachStep * i) * radius + explosionPoint.y
 			));
 		}
 		newArray.push(new BABYLON.Vector3(exitPoint.x, 0, exitPoint.y));
 	}
+
 
 
 	/**

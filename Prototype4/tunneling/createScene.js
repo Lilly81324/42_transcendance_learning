@@ -40,9 +40,9 @@ function createPlayer(scene) {
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
         BABYLON.ActionManager.OnEveryFrameTrigger,
         () => {
-            if (rot_l)
-                player.rotation.z = player.rotation.z + rot_speed;
             if (rot_r)
+                player.rotation.z = player.rotation.z + rot_speed;
+            if (rot_l)
                 player.rotation.z = player.rotation.z - rot_speed;
             if (up)
                 player.position.y = player.position.y + speed;
@@ -64,7 +64,6 @@ function angleToVector(angle) {
 }
 
 function registerProjectiles(game, player) {
-    var projectiles = [];
     const magnitude = 0.4;
     let proj_counter = 0;
     game.scene.onKeyboardObservable.add((kbInfo) => {
