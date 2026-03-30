@@ -93,7 +93,6 @@ function registerProjectiles(game, player) {
             proj_counter++;
         }
     });
-    return (projectiles);
 }
 
 export function createScene (game, canvas) {
@@ -107,5 +106,5 @@ export function createScene (game, canvas) {
     light.intensity = 0.7;
 
     var player = createPlayer(game.scene);
-    var projectiles = registerProjectiles(game, player);
+    registerProjectiles(game, player);
 };
