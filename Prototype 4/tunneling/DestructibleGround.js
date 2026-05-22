@@ -1,5 +1,16 @@
 import { Vector } from "./Vector.js";
 
+const DEBUG = true;
+
+/**
+ * affectTerrain()
+ * -> Find point outside of explo with insideExploCheck()
+ * -> If no point outside, make empty mesh with makeGround()
+ * -> go through all vectors, check for Intersection with checkIntersection()
+ * -> call carving logic with onExitingExplo()
+ */
+
+
 // Go through each vector in the array, get the points of contact
 export class DestructibleGround {
 	/**
@@ -84,7 +95,6 @@ export class DestructibleGround {
 		this.makeGround(newArray);
 	}
 
-
 	/**
 	 * @brief Create new ground mesh based on given array
 	 * @param newArray Array of BABYLON.Vector3 representing the points along the curve of the mesh
@@ -111,7 +121,6 @@ export class DestructibleGround {
 		this.groundMesh.physicsAggregate = new BABYLON.PhysicsAggregate(this.groundMesh, BABYLON.PhysicsShapeType.MESH, { mass: 0 }, this.scene);
 	}
 
-
 	/**
 	* @brief Fills newArray with points along curved surface
 	* @param newArray Array of BABYLON.Vector3 that represents the new map, last entry should be the point where the explosion begins
@@ -133,17 +142,12 @@ export class DestructibleGround {
 		if (endAngle >= Math.PI)
 			startAngle += Math.PI * 2;
 		const angleDiff = endAngle - startAngle;
-		console.log("Start at: ", startAngle / Math.PI * 180);
-		console.log("End at: ", endAngle / Math.PI * 180);
-		console.log("Diff at: ", angleDiff / Math.PI * 180);
 
 		// Divide the shortest path by the steps
 		const angleEachStep = angleDiff  / (tessalationCount);
-		console.log("Each step we go: ", (angleEachStep / Math.PI) * 180)
 
 		// Walk along explosions surface, putting tesselationCount points into the newArray
 		for (let i = 1; i < tessalationCount; i++) {
-			console.log("For angle ", (startAngle + angleEachStep * i) / Math.PI * 180);
 			// console.log("X Axis diff ", -Math.sin(initialAngleOffset + angleEachStep * i));
 			// console.log("Y Axis diff ", Math.cos(initialAngleOffset + angleEachStep * i));
 			newArray.push(new BABYLON.Vector3(
@@ -154,8 +158,6 @@ export class DestructibleGround {
 		}
 		newArray.push(new BABYLON.Vector3(exitPoint.x, 0, exitPoint.y));
 	}
-
-
 
 	/**
 	 * @brief Quickly check, if the given point is inside the Explosion
